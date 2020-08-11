@@ -10,7 +10,8 @@
     "init": "^0.1.2",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
-    "mysql2": "^2.1.0"
+    "mysql2": "^2.1.0",
+    "validator": "^13.1.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
