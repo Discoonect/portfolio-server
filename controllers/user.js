@@ -36,9 +36,10 @@ exports.createUser = async (req, res, next) => {
   } catch (e) {
     //이메일 중복 오류
     if (e.errno == 1062) {
-      res
-        .status(400)
-        .json({ success: false, message: "이미 사용되고 있는 이메일 입니다" });
+      res.status(400).json({
+        success: false,
+        message: "이미 사용되고 있는 이메일 또는 전화번호 입니다",
+      });
       return;
     } else {
       //아니면 다른오류
