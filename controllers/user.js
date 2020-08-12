@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 
 const connection = require("../db/mysql_connection");
 
+//이메일, 핸드폰번호 중복처리
 //@desc             회원가입
 //@route            POST/api/v1/user
 //@request          email, passwd, phone
