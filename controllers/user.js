@@ -122,3 +122,32 @@ exports.logout = async (req, res, next) => {
     res.status(500).json({ success: false });
   }
 };
+
+//@desc             회원 탈퇴
+//@route            DELETE/api/v1/user/adios
+//@request          user_email(auth)
+//@response         success
+
+exports.adios = async (req, res, next) => {
+  let user_id = req.user.id;
+  let query = `delete from user where id = ${user_id}`;
+  const conn = await connection.getConnection();
+  try {
+    await conn.beginTransaction();
+    // 첫번째 테이블에서 정보 삭제
+    [result] = await conn.query(query);
+    // 두번째 테이블에서 정보 삭제
+    query = `delete from token where user_id = ${user_id}`;
+    [result] = await conn.query(query);
+
+    await conn.commit();
+
+    res.status(200).json({ success: true, message: "탈퇴되었습니다" });
+  } catch (e) {
+    await conn.rollback();
+
+    res.status(500).json({ success: false, error: e });
+  } finally {
+    conn.release();
+  }
+};
