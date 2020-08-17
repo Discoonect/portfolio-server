@@ -7,7 +7,7 @@ const auth = async (req, res, next) => {
     token = req.header("Authorization");
     token = token.replace("Bearer ", "");
   } catch (e) {
-    res.status(401).json({ success: false, message: "실패1" });
+    res.status(401).json({ success: false, message: "error1" });
     return;
   }
 
@@ -16,7 +16,7 @@ const auth = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     user_id = decoded.user_id;
   } catch (e) {
-    res.status(401).json({ success: false, message: "실패2" });
+    res.status(401).json({ success: false, message: "error2" });
     return;
   }
 
@@ -32,14 +32,14 @@ const auth = async (req, res, next) => {
   try {
     [rows] = await connection.query(query, data);
     if (rows.length == 0) {
-      res.status(401).json({ success: false, message: "실패3" });
+      res.status(401).json({ success: false, message: "error3" });
       return;
     } else {
       req.user = rows[0];
       next();
     }
   } catch (e) {
-    res.status(500).json({ success: false, message: "실패4" });
+    res.status(500).json({ success: false, message: "error4" });
     return;
   }
 };

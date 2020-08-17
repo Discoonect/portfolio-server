@@ -13,6 +13,6 @@ app.use(morgan("dev"));
 
 app.use("/api/v1/user", user);
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5990;
 
 app.listen(PORT, console.log(`Server running in port ${PORT}!`));
