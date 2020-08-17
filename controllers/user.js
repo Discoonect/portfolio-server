@@ -4,10 +4,10 @@ const jwt = require("jsonwebtoken");
 
 const connection = require("../db/mysql_connection");
 
-//이메일, 핸드폰번호 중복처리
 //@desc             회원가입
 //@route            POST/api/v1/user
-//@request          email, passwd, phone
+//@request          user_email, user_passwd, user_phone
+//@response
 exports.createUser = async (req, res, next) => {
   let email = req.body.user_email;
   let passwd = req.body.user_passwd;
@@ -62,9 +62,10 @@ exports.createUser = async (req, res, next) => {
   }
 };
 
-// @desc            로그인
-// @route           POST/api/v1/user/login
-// @parameters      email, passwd
+// @desc             로그인
+// @route            POST/api/v1/user/login
+// @request          user_email, user_passwd
+// @response         success
 exports.login = async (req, res, next) => {
   let email = req.body.user_email;
   let passwd = req.body.user_passwd;
@@ -93,8 +94,15 @@ exports.login = async (req, res, next) => {
   data = [token, user_id];
   try {
     [result] = await connection.query(query, data);
-    res.status(200).json({ success: true, token: token });
+    res
+      .status(200)
+      .json({ success: true, token: token, message: "로그인 성공!" });
   } catch (e) {
-    res.status(500).json({ success: false });
+    res.status(500).json({ success: false, error: "오류" });
   }
 };
+
+//@desc             로그아웃
+//@route            DELETE/api/v1/user
+//@request          token(header), user_email(auth)
+//@response         success
