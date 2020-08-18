@@ -47,3 +47,29 @@ exports.upload = async (req, res, next) => {
     return;
   }
 };
+
+//@desc         내가 작성한 포스팅 가져오기
+//@route        GET/api/v1/post/me
+//@request      user_id(auth)
+//@response     success, items[]
+
+exports.myPost = async (req, res, next) => {
+  let user_id = req.user.id;
+
+  //error
+  if (!user_id) {
+    res.status(400).json({ success: false, error: e });
+    return;
+  }
+  let query = "select * from post where user_id = ?";
+  let data = [user_id];
+
+  try {
+    [rows] = await connection.query(query, data);
+    res.status(200).json({ success: true, items: rows });
+  } catch (e) {
+    res.status(500).json({ success: false, message: "불러올 수 없습니다" });
+  }
+};
+
+
