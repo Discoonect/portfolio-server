@@ -6,12 +6,13 @@ const connection = require("../db/mysql_connection");
 
 //@desc             회원가입
 //@route            POST/api/v1/user
-//@request          user_email, user_passwd, user_phone
+//@request          user_email, user_passwd, user_phone, user_nickname
 //@response
 exports.createUser = async (req, res, next) => {
   let email = req.body.user_email;
   let passwd = req.body.user_passwd;
   let phone = req.body.user_phone;
+  let nickname = req.body.user_nickname;
 
   const hashedPasswd = await bcrypt.hash(passwd, 8);
 
@@ -22,10 +23,11 @@ exports.createUser = async (req, res, next) => {
       .json({ success: false, message: "이메일 형식이 맞지 않습니다" });
     return;
   }
+
   //이메일 형식에 맞을 때 유저 insert
   let query =
-    "insert into user (user_email, user_passwd, user_phone) values (?,?,?)";
-  let data = [email, hashedPasswd, phone];
+    "insert into user (user_email, user_passwd, user_phone, user_nickname) values (?,?,?,?)";
+  let data = [email, hashedPasswd, phone, nickname];
   let user_id;
 
   try {
@@ -39,7 +41,7 @@ exports.createUser = async (req, res, next) => {
     if (e.errno == 1062) {
       res.status(400).json({
         success: false,
-        message: "이미 사용되고 있는 이메일 또는 전화번호 입니다",
+        message: "이미 사용되고 있는 이메일 입니다",
       });
       return;
     } else {
@@ -48,6 +50,7 @@ exports.createUser = async (req, res, next) => {
       return;
     }
   }
+
   //토큰생성
   let token = jwt.sign({ user_id: user_id }, process.env.ACCESS_TOKEN_SECRET);
   query = "insert into token(token, user_id) values (?,?)";
@@ -56,10 +59,34 @@ exports.createUser = async (req, res, next) => {
   try {
     [result] = await connection.query(query, data);
     //성공하면 토큰출력
-    res.status(200).json({ success: true, token: token });
+    res.status(200).json({ success: true, token: token, rows: rows });
     //오류처리
   } catch (e) {
     res.status(500).json({ success: false, error: e });
+  }
+};
+
+// @desc             닉네임 중복체크
+// @route            POST/api/v1/user/nickname
+// @request          user_nickname
+// @response         success
+exports.nickname = async (req, res, next) => {
+  let nickname = req.body.user_nickname;
+  let query =
+    "select count(user_nickname) as count from user where user_nickname=?";
+  let data = [nickname];
+
+  try {
+    [result] = await connection.query(query, data);
+    if (result[0].count == 0) {
+      res
+        .status(200)
+        .json({ success: true, message: "사용가능한 닉네임 입니다" });
+    } else {
+      res.status(200).json({ success: true, message: "이미 사용중인 닉네임 입니다" });
+    }
+  } catch (e) {
+    res.status(500).json({ success: false, message: e });
   }
 };
 
