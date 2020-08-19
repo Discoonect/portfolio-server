@@ -1,7 +1,6 @@
 {
   "name": "portfolio-server",
   "version": "1.0.0",
-  "description": "",
   "main": "server.js",
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -31,5 +30,6 @@
   "bugs": {
     "url": "https://github.com/Discoonect/portfolio-server/issues"
   },
-  "homepage": "https://github.com/Discoonect/portfolio-server#readme"
+  "homepage": "https://github.com/Discoonect/portfolio-server#readme",
+  "description": ""
 }

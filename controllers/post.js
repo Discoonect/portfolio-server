@@ -73,7 +73,7 @@ exports.myPost = async (req, res, next) => {
 };
 
 //@desc                 내 친구들의 포스팅 불러오기(25개씩)
-//@route                GET/api/v1/post?offset=0&limit=25
+//@route                GET/api/v1/post/getfollowerpost?offset=0&limit=25
 //@request              user_id(auth)
 //@response             success, items[], cnt
 exports.getfollowerPost = async (req, res, next) => {
@@ -86,19 +86,22 @@ exports.getfollowerPost = async (req, res, next) => {
     return;
   }
   let query =
-    "select p.id, p.user_id, p.photo_url, p.content, p.created_at ,\
-              pl.follower_id as like_follower ,\
-              c.user_id as comment_user, c.comment, c.created_at as comment_created_at \
-              from follow as f \
-              join post as p \
-              on f.user_id = p.user_id \
-              join postlike as pl \
-              on p.id = pl.post_id \
-              join comment as c \
-              on pl.post_id = c.post_id \
-              where p.user_id = ? \
-              order by p.created_at desc \
-              limit ?,?";
+    "select u.user_nickname, u.user_profilephoto, \
+		p.id, p.user_id, p.photo_url, p.content, p.created_at, \
+    pl.follower_id as like_follower, \
+		c.user_id as comment_user, c.comment as comment, c.created_at as comment_created_at \
+    from post as p \
+    join user as u \
+    on p.user_id = u.id \
+    join follow as f \
+    on u.id = f.user_id \
+    join postlike as pl \
+		on f.user_id = pl.user_id \
+    join comment as c \
+    on pl.post_id = c.post_id \
+    where p.user_id = ? \
+    order by p.created_at desc \
+    limit ?,?";
 
   let data = [user_id, Number(offset), Number(limit)];
 
