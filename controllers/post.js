@@ -72,4 +72,40 @@ exports.myPost = async (req, res, next) => {
   }
 };
 
+//@desc                 내 친구들의 포스팅 불러오기(25개씩)
+//@route                GET/api/v1/post?offset=0&limit=25
+//@request              user_id(auth)
+//@response             success, items[], cnt
+exports.getfollowerPost = async (req, res, next) => {
+  let user_id = req.user.id;
+  let offset = req.query.offset;
+  let limit = req.query.limit;
 
+  if (!user_id || !offset || !limit) {
+    res.status(400).json({ success: false, message: "파라미터 오류" });
+    return;
+  }
+  let query =
+    "select p.id, p.user_id, p.photo_url, p.content, p.created_at ,\
+              pl.follower_id as like_follower ,\
+              c.user_id as comment_user, c.comment, c.created_at as comment_created_at \
+              from follow as f \
+              join post as p \
+              on f.user_id = p.user_id \
+              join postlike as pl \
+              on p.id = pl.post_id \
+              join comment as c \
+              on pl.post_id = c.post_id \
+              where p.user_id = ? \
+              order by p.created_at desc \
+              limit ?,?";
+
+  let data = [user_id, Number(offset), Number(limit)];
+
+  try {
+    [rows] = await connection.query(query, data);
+    res.status(200).json({ success: true, items: rows });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e });
+  }
+};

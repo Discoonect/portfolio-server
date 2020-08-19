@@ -46,7 +46,7 @@ exports.createUser = async (req, res, next) => {
       return;
     } else {
       //아니면 다른오류
-      res.status(500).json({ success: false, error: e });
+      res.status(500).json({ success: false, error: e, message: "1" });
       return;
     }
   }
@@ -59,10 +59,10 @@ exports.createUser = async (req, res, next) => {
   try {
     [result] = await connection.query(query, data);
     //성공하면 토큰출력
-    res.status(200).json({ success: true, token: token, rows: rows });
+    res.status(200).json({ success: true, token: token });
     //오류처리
   } catch (e) {
-    res.status(500).json({ success: false, error: e });
+    res.status(500).json({ success: false, error: e, message: "2" });
   }
 };
 
@@ -83,7 +83,9 @@ exports.nickname = async (req, res, next) => {
         .status(200)
         .json({ success: true, message: "사용가능한 닉네임 입니다" });
     } else {
-      res.status(200).json({ success: true, message: "이미 사용중인 닉네임 입니다" });
+      res
+        .status(200)
+        .json({ success: true, message: "이미 사용중인 닉네임 입니다" });
     }
   } catch (e) {
     res.status(500).json({ success: false, message: e });
