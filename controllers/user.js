@@ -6,28 +6,18 @@ const connection = require("../db/mysql_connection");
 
 //@desc             회원가입
 //@route            POST/api/v1/user
-//@request          user_email, user_passwd, user_phone, user_nickname
+//@request          user_name, user_passwd, user_phone, user_nickname
 //@response
 exports.createUser = async (req, res, next) => {
-  let email = req.body.user_email;
+  let name = req.body.user_name;
   let passwd = req.body.user_passwd;
   let phone = req.body.user_phone;
-  let nickname = req.body.user_nickname;
 
   const hashedPasswd = await bcrypt.hash(passwd, 8);
 
-  //이메일 형식에 안맞을 때
-  if (!validator.isEmail(email)) {
-    res
-      .status(500)
-      .json({ success: false, message: "이메일 형식이 맞지 않습니다" });
-    return;
-  }
-
-  //이메일 형식에 맞을 때 유저 insert
   let query =
-    "insert into user (user_email, user_passwd, user_phone, user_nickname) values (?,?,?,?)";
-  let data = [email, hashedPasswd, phone, nickname];
+    "insert into user (user_name, user_passwd, user_phone) values (?,?,?)";
+  let data = [name, hashedPasswd, phone];
   let user_id;
 
   try {
@@ -35,13 +25,13 @@ exports.createUser = async (req, res, next) => {
     [result] = await connection.query(query, data);
     user_id = result.insertId;
 
-    //이메일 오류처리
+    //유저네임 오류처리
   } catch (e) {
-    //이메일 중복 오류
+    //중복 오류
     if (e.errno == 1062) {
       res.status(400).json({
         success: false,
-        message: "이미 사용되고 있는 이메일 입니다",
+        message: "이미 사용되고 있는 아이디 입니다",
       });
       return;
     } else {
@@ -66,26 +56,25 @@ exports.createUser = async (req, res, next) => {
   }
 };
 
-// @desc             닉네임 중복체크
-// @route            POST/api/v1/user/checknickname
-// @request          user_nickname
+// @desc             유저네임 중복체크
+// @route            POST/api/v1/user/checkid
+// @request          user_name
 // @response         success
-exports.checknickname = async (req, res, next) => {
-  let nickname = req.body.user_nickname;
-  let query =
-    "select count(user_nickname) as count from user where user_nickname=?";
-  let data = [nickname];
+exports.checkid = async (req, res, next) => {
+  let name = req.body.user_name;
+  let query = "select count(user_name) as count from user where user_name=?";
+  let data = [name];
 
   try {
     [result] = await connection.query(query, data);
     if (result[0].count == 0) {
       res
         .status(200)
-        .json({ success: true, message: "사용가능한 닉네임 입니다" });
+        .json({ success: true, message: "사용가능한 아이디 입니다" });
     } else {
       res
         .status(200)
-        .json({ success: false, message: "이미 사용중인 닉네임 입니다" });
+        .json({ success: false, message: "이미 사용중인 아이디 입니다" });
     }
   } catch (e) {
     res.status(500).json({ success: false, message: e });
@@ -94,14 +83,14 @@ exports.checknickname = async (req, res, next) => {
 
 // @desc             로그인
 // @route            POST/api/v1/user/login
-// @request          user_email, user_passwd
+// @request          user_name, user_passwd
 // @response         success
 exports.login = async (req, res, next) => {
-  let email = req.body.user_email;
+  let name = req.body.user_name;
   let passwd = req.body.user_passwd;
 
-  let query = "select * from user where user_email = ? ";
-  let data = [email];
+  let query = "select * from user where user_name = ? ";
+  let data = [name];
 
   let user_id;
   try {
@@ -135,7 +124,7 @@ exports.login = async (req, res, next) => {
 
 //@desc             로그아웃
 //@route            DELETE/api/v1/user/logout
-//@request          token(header), user_email(auth)
+//@request          token(header), user_name(auth)
 //@response         success
 exports.logout = async (req, res, next) => {
   let user_id = req.user.id;
@@ -154,7 +143,7 @@ exports.logout = async (req, res, next) => {
 
 //@desc             회원 탈퇴
 //@route            DELETE/api/v1/user/adios
-//@request          user_email(auth)
+//@request          user_name(auth)
 //@response         success
 
 exports.adios = async (req, res, next) => {

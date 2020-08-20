@@ -7,6 +7,7 @@ const morgan = require("morgan");
 
 const user = require("./routes/user");
 const post = require("./routes/post");
+const follow = require("./routes/follow");
 
 const app = express();
 app.use(express.json());
@@ -17,6 +18,7 @@ app.use(morgan("dev"));
 
 app.use("/api/v1/user", user);
 app.use("/api/v1/post", post);
+app.use("/api/v1/follow", follow);
 
 const PORT = process.env.PORT || 5990;
 

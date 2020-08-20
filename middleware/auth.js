@@ -21,7 +21,7 @@ const auth = async (req, res, next) => {
   }
 
   let query =
-    "select u.id, u.user_email, u.created_at, t.token \
+    "select u.id, u.user_name, u.created_at, t.token \
   from user as u \
   join token as t \
   on u.id = t.user_id \
