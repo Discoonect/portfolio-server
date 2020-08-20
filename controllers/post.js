@@ -104,10 +104,12 @@ exports.getfollowerPost = async (req, res, next) => {
     limit ?,?";
 
   let data = [user_id, Number(offset), Number(limit)];
+  let cnt;
 
   try {
     [rows] = await connection.query(query, data);
-    res.status(200).json({ success: true, items: rows });
+    cnt = rows.length;
+    res.status(200).json({ success: true, items: rows, cnt: cnt });
   } catch (e) {
     res.status(500).json({ success: false, error: e });
   }
