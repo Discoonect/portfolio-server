@@ -67,10 +67,10 @@ exports.createUser = async (req, res, next) => {
 };
 
 // @desc             닉네임 중복체크
-// @route            POST/api/v1/user/nickname
+// @route            POST/api/v1/user/checknickname
 // @request          user_nickname
 // @response         success
-exports.nickname = async (req, res, next) => {
+exports.checknickname = async (req, res, next) => {
   let nickname = req.body.user_nickname;
   let query =
     "select count(user_nickname) as count from user where user_nickname=?";

@@ -5,14 +5,14 @@ const {
   login,
   logout,
   adios,
-  nickname,
+  checknickname,
 } = require("../controllers/user");
 
 const auth = require("../middleware/auth");
 const router = express.Router();
 
 router.route("/").post(createUser);
-router.route("/nickname").post(nickname);
+router.route("/checknickname").post(checknickname);
 router.route("/login").post(login);
 router.route("/logout").delete(auth, logout);
 router.route("/adios").delete(auth, adios);
