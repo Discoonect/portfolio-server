@@ -85,7 +85,7 @@ exports.nickname = async (req, res, next) => {
     } else {
       res
         .status(200)
-        .json({ success: true, message: "이미 사용중인 닉네임 입니다" });
+        .json({ success: false, message: "이미 사용중인 닉네임 입니다" });
     }
   } catch (e) {
     res.status(500).json({ success: false, message: e });
