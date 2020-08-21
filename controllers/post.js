@@ -86,7 +86,7 @@ exports.getfollowerPost = async (req, res, next) => {
     return;
   }
   let query =
-    "select p.id, u.user_name, u.user_profilephoto, \
+    "select p.id as post_id, u.user_name, u.user_profilephoto, \
     p.photo_url, p.content, p.created_at \
     from follow as f \
     join post as p \
