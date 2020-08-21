@@ -40,7 +40,14 @@ exports.createUser = async (req, res, next) => {
       return;
     }
   }
-
+  //나를 팔로우에 추가(모든 게시물(홈화면)에 내 글도 표시해야 하므로)
+  query = "insert into follow (user_id, follower_id) values (?,?)";
+  data = [user_id, user_id];
+  try {
+    [result] = await connection.query(query, data);
+  } catch (e) {
+    res.status(500).json({ success: false, error: e, message: "오류" });
+  }
   //토큰생성
   let token = jwt.sign({ user_id: user_id }, process.env.ACCESS_TOKEN_SECRET);
   query = "insert into token(token, user_id) values (?,?)";
