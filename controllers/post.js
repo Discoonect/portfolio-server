@@ -88,10 +88,12 @@ exports.getfollowerPost = async (req, res, next) => {
   let query =
     "select u.user_name, u.user_profilephoto, \
     p.photo_url, p.content, p.created_at \
-    from post as p \
+    from follow as f \
+    join post as p \
+    on f.follower_id = p.user_id \
     join user as u \
     on p.user_id = u.id \
-    where p.user_id = ? \
+    where f.user_id = ? \
     order by p.created_at desc \
     limit ?,?";
 
