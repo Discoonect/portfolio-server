@@ -89,3 +89,33 @@ exports.deletecomment = async (req, res, next) => {
     return;
   }
 };
+
+//@desc             게시글의 댓글 불러오기(25개씩)
+//@route            GET/api/v1/comment/getcomment?offset=0&limit=25
+//@request          post_id, offset, limit
+//@response         success, items, cnt
+exports.getcomment = async (req, res, next) => {
+  let post_id = req.body.post_id;
+  let offset = req.query.offset;
+  let limit = req.query.limit;
+
+  let query =
+    "select c.post_id, \
+                u.user_profilephoto, u.user_name, \
+                c.comment, c.created_at \
+                from user as u \
+                join comment as c \
+                on u.id = c.user_id \
+                where c.post_id = ? \
+                order by c.created_at desc \
+                limit ?,?";
+
+  let data = [post_id, Number(offset), Number(limit)];
+
+  try {
+    [rows] = await connection.query(query, data);
+    res.status(200).json({ success: true, items: rows, cnt: rows.length });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e });
+  }
+};
