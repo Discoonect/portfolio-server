@@ -112,7 +112,7 @@ exports.getfollowerPost = async (req, res, next) => {
 };
 
 //@desc         게시글 수정
-//@route        PUT/api/v1/posts/:post_id
+//@route        PUT/api/v1/updatepost/:post_id
 //@request      user_id(auth), photo, content
 //@response     success
 exports.updatepost = async (req, res, next) => {
@@ -163,6 +163,46 @@ exports.updatepost = async (req, res, next) => {
     return;
   } catch (e) {
     res.status(500).json({ success: false, error: e });
+    return;
+  }
+};
+
+//@desc         게시글 삭제
+//@route        DELETE/api/v1/deletepost/:post_id
+//@request      user_id(auth), post_id
+//@response     success
+exports.deletepost = async (req, res, next) => {
+  let post_id = req.params.post_id;
+  let user_id = req.user.id;
+
+  if (!post_id || !user_id) {
+    res.status(400).json({ success: false, message: "파라미터 오류" });
+    return;
+  }
+  //본인확인
+  let query = "select * from post where id = ?";
+  data = [post_id];
+  let photo_url;
+
+  try {
+    [rows] = await connection.query(query, data);
+    if (rows[0].user_id != user_id) {
+      req.status(401).json({ success: false, message: "삭제할 수 없습니다" });
+      return;
+    }
+    photo_url = rows[0].photo_url;
+  } catch (e) {
+    res.status(500).json({ success: false, error: e });
+    return;
+  }
+  query = "delete from post where id = ?";
+  data = [post_id];
+  try {
+    [result] = await connection.query(query, data);
+    res.status(200).json({ success: true, message: "삭제되었습니다" });
+    return;
+  } catch (e) {
+    res.status(500).json({ success: false, error: e2 });
     return;
   }
 };
