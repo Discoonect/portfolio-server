@@ -3,6 +3,7 @@ const connection = require("../db/mysql_connection");
 //@desc             댓글달기
 //@route            POST/api/v1/comment/addcomment
 //@request          post_id, user_id(auth), comment
+//@response         success
 exports.addcomment = async (req, res, next) => {
   let post_id = req.body.post_id;
   let user_id = req.user.id;

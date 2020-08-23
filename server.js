@@ -9,6 +9,7 @@ const user = require("./routes/user");
 const post = require("./routes/post");
 const follow = require("./routes/follow");
 const comment = require("./routes/comment");
+const like = require("./routes/like");
 
 const app = express();
 app.use(express.json());
@@ -21,6 +22,7 @@ app.use("/api/v1/user", user);
 app.use("/api/v1/post", post);
 app.use("/api/v1/follow", follow);
 app.use("/api/v1/comment", comment);
+app.use("/api/v1/like", like);
 
 const PORT = process.env.PORT || 5990;
 
