@@ -7,7 +7,7 @@ const { runInNewContext } = require("vm");
 //@request          user_id(auth), following_id
 //@response         success
 
-exports.follow = async (req, res, next) => {
+exports.following = async (req, res, next) => {
   let user_id = req.user.id;
   let following_id = req.body.following_id;
 

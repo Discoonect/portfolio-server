@@ -7,7 +7,7 @@ const { runInNewContext } = require("vm");
 //@request          photo, content, user_id(auth)
 //@response         success
 
-exports.upload = async (req, res, next) => {
+exports.uploadpost = async (req, res, next) => {
   let user_id = req.user.id;
   let photo = req.files.photo;
   let content = req.body.content;

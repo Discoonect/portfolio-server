@@ -1,7 +1,7 @@
 const express = require("express");
 
 const {
-  createUser,
+  signup,
   login,
   logout,
   adios,
@@ -11,7 +11,7 @@ const {
 const auth = require("../middleware/auth");
 const router = express.Router();
 
-router.route("/").post(createUser);
+router.route("/signup").post(signup);
 router.route("/checkid").post(checkid);
 router.route("/login").post(login);
 router.route("/logout").delete(auth, logout);
