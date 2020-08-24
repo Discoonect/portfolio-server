@@ -31,20 +31,20 @@ exports.likepost = async (req, res, next) => {
 
 //@desc             게시글 좋아요 취소
 //@route            DELETE/api/v1/like/deletelikepost
-//@request          postlike_id, user_id(auth)
+//@request          post_id, user_id(auth)
 //@response         success
 exports.deletelikepost = async (req, res, next) => {
-  let postlike_id = req.body.postlike_id;
+  let post_id = req.body.post_id;
   let user_id = req.user.id;
 
-  if (!postlike_id || !user_id) {
+  if (!post_id || !user_id) {
     res
       .status(400)
       .json({ success: false, message: "요청을 찾을 수 없습니다" });
     return;
   }
-  let query = "delete from postlike where id = ? and user_id = ?";
-  let data = [postlike_id, user_id];
+  let query = "delete from postlike where post_id = ? and user_id = ?";
+  let data = [post_id, user_id];
 
   try {
     [result] = await connection.query(query, data);
@@ -87,17 +87,17 @@ exports.likecomment = async (req, res, next) => {
 //@request          commentlike_id, user_id(auth)
 //@response         success
 exports.deletelikecomment = async (req, res, next) => {
-  let commentlike_id = req.body.commentlike_id;
+  let comment_id = req.body.comment_id;
   let user_id = req.user.id;
 
-  if (!commentlike_id || !user_id) {
+  if (!comment_id || !user_id) {
     res
       .status(400)
       .json({ success: false, message: "요청을 찾을 수 없습니다" });
     return;
   }
   let query = "delete from commentlike where id = ? and user_id = ?";
-  let data = [commentlike_id, user_id];
+  let data = [comment_id, user_id];
 
   try {
     [result] = await connection.query(query, data);
