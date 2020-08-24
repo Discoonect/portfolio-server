@@ -41,7 +41,7 @@ exports.createUser = async (req, res, next) => {
     }
   }
   //나를 팔로우에 추가(모든 게시물(홈화면)에 내 글도 표시해야 하므로)
-  query = "insert into follow (user_id, follower_id) values (?,?)";
+  query = "insert into follow (user_id, following_id) values (?,?)";
   data = [user_id, user_id];
   try {
     [result] = await connection.query(query, data);

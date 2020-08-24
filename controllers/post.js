@@ -92,7 +92,7 @@ exports.getfollowerPost = async (req, res, next) => {
     p.photo_url, p.content, p.created_at \
     from follow as f \
     join post as p \
-    on f.follower_id = p.user_id \
+    on f.following_id = p.user_id \
     join user as u \
     on p.user_id = u.id \
     where f.user_id = ? \
