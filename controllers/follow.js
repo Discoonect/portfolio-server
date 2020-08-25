@@ -3,7 +3,7 @@ const path = require("path");
 const { runInNewContext } = require("vm");
 
 //@desc             팔로우 하기
-//@route            POST/api/v1/follow
+//@route            POST/api/v1/follow/following
 //@request          user_id(auth), following_id
 //@response         success
 

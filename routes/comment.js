@@ -4,7 +4,7 @@ const {
   addcomment,
   updatecomment,
   deletecomment,
-  getcomment,
+  getpostcomment,
 } = require("../controllers/comment");
 
 const auth = require("../middleware/auth");
@@ -14,5 +14,5 @@ const router = express.Router();
 router.route("/addcomment").post(auth, addcomment);
 router.route("/updatecomment").put(auth, updatecomment);
 router.route("/deletecomment").delete(auth, deletecomment);
-router.route("/getcomment").get(auth, getcomment);
+router.route("/getpostcomment").get(auth, getpostcomment);
 module.exports = router;

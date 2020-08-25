@@ -2,8 +2,8 @@ const connection = require("../db/mysql_connection");
 const path = require("path");
 const { runInNewContext } = require("vm");
 
-//@desc             사진과 내용 업로드
-//@route            POST/api/v1/post
+//@desc             게시글 업로드
+//@route            POST/api/v1/post/uploadpost
 //@request          photo, content, user_id(auth)
 //@response         success
 
@@ -49,7 +49,7 @@ exports.uploadpost = async (req, res, next) => {
 };
 
 //@desc         내가 작성한 포스팅 가져오기(25개씩)
-//@route        GET/api/v1/post/me?offset=0&limit=25
+//@route        GET/api/v1/post/mypost?offset=0&limit=25
 //@request      user_id(auth), offset, limit
 //@response     success, items[], cnt
 
@@ -75,10 +75,10 @@ exports.myPost = async (req, res, next) => {
 };
 
 //@desc                 친구들의 게시글 불러오기(25개씩)
-//@route                GET/api/v1/post/getfollowerpost?offset=0&limit=25
+//@route                GET/api/v1/post/getallpost?offset=0&limit=25
 //@request              user_id(auth)
 //@response             success, items[], cnt
-exports.getfollowerPost = async (req, res, next) => {
+exports.getallpost = async (req, res, next) => {
   let user_id = req.user.id;
   let offset = req.query.offset;
   let limit = req.query.limit;
@@ -104,8 +104,8 @@ exports.getfollowerPost = async (req, res, next) => {
 
   try {
     [rows] = await connection.query(query, data);
-    cnt = rows.length;
-    res.status(200).json({ success: true, items: rows, cnt: cnt });
+
+    res.status(200).json({ success: true, items: rows, cnt: rows.length });
   } catch (e) {
     res.status(500).json({ success: false, error: e });
   }
@@ -168,7 +168,7 @@ exports.updatepost = async (req, res, next) => {
 };
 
 //@desc         게시글 삭제
-//@route        DELETE/api/v1/deletepost/:post_id
+//@route        DELETE/api/v1/post/deletepost/:post_id
 //@request      user_id(auth), post_id
 //@response     success
 exports.deletepost = async (req, res, next) => {

@@ -5,8 +5,8 @@ const jwt = require("jsonwebtoken");
 const connection = require("../db/mysql_connection");
 
 //@desc             회원가입
-//@route            POST/api/v1/user
-//@request          user_name, user_passwd, user_phone, user_nickname
+//@route            POST/api/v1/user/signup
+//@request          user_name, user_passwd, user_phone
 //@response
 exports.signup = async (req, res, next) => {
   let name = req.body.user_name;
@@ -31,7 +31,7 @@ exports.signup = async (req, res, next) => {
     if (e.errno == 1062) {
       res.status(400).json({
         success: false,
-        message: "이미 사용되고 있는 아이디 입니다",
+        message: "이미 사용중인 아이디 입니다",
       });
       return;
     } else {

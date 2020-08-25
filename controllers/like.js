@@ -20,7 +20,7 @@ exports.likepost = async (req, res, next) => {
     //중복 좋아요 방지
     if (e.errno == 1062) {
       res
-        .status(500)
+        .status(400)
         .json({ success: false, message: "이미 이 게시글을 좋아합니다" });
       return;
     } else {
@@ -38,9 +38,7 @@ exports.deletelikepost = async (req, res, next) => {
   let user_id = req.user.id;
 
   if (!post_id || !user_id) {
-    res
-      .status(400)
-      .json({ success: false, message: "요청을 찾을 수 없습니다" });
+    res.status(400).json({ success: false, message: "파라미터 오류" });
     return;
   }
   let query = "delete from postlike where post_id = ? and user_id = ?";
@@ -73,7 +71,7 @@ exports.likecomment = async (req, res, next) => {
     //중복 좋아요 방지
     if (e.errno == 1062) {
       res
-        .status(500)
+        .status(400)
         .json({ success: false, message: "이미 이 댓글을 좋아합니다" });
       return;
     } else {
@@ -91,9 +89,7 @@ exports.deletelikecomment = async (req, res, next) => {
   let user_id = req.user.id;
 
   if (!comment_id || !user_id) {
-    res
-      .status(400)
-      .json({ success: false, message: "요청을 찾을 수 없습니다" });
+    res.status(400).json({ success: false, message: "파라미터 오류" });
     return;
   }
   let query = "delete from commentlike where id = ? and user_id = ?";
