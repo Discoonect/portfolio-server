@@ -89,15 +89,22 @@ exports.getallpost = async (req, res, next) => {
   }
   let query =
     "select p.id as post_id, u.user_name, u.user_profilephoto, \
-    p.photo_url, p.content, p.created_at \
+    p.photo_url, p.content, p.created_at, \
+    count(distinct c.id) AS comment_cnt, \
+    count(distinct pl.id) AS like_cnt \
     from follow as f \
     join post as p \
     on f.following_id = p.user_id \
     join user as u \
     on p.user_id = u.id \
+    left join postlike as pl \
+    on pl.post_id = p.id \
+    left join comment as c \
+    on p.id = c.post_id \
     where f.user_id = ? \
+    group by p.id, u.user_name, u.user_profilephoto, p.photo_url, p.content, p.created_at \
     order by p.created_at desc \
-    limit ?,?";
+    limit ?,?;";
 
   let data = [user_id, Number(offset), Number(limit)];
   let cnt;
