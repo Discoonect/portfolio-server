@@ -1,5 +1,4 @@
 const connection = require("../db/mysql_connection");
-const { post } = require("../routes/like");
 
 //@desc             게시글 좋아요 하기
 //@route            POST/api/v1/like/likepost
@@ -60,20 +59,19 @@ exports.deletelikepost = async (req, res, next) => {
 //@response         success, cnt
 exports.countlikepost = async (req, res, next) => {
   let post_id = req.params.post_id;
-  let query =
-    "select count(pl.post_id) as cnt \
-              from postlike as pl \
-              join post as p \
-              on pl.post_id = p.id \
-              where pl.post_id = ?";
-  let data = [post_id];
+
+  let query = `select count(pl.post_id) as cnt 
+              from postlike as pl 
+              join post as p 
+              on pl.post_id = p.id 
+              where pl.post_id = ${post_id}`;
+  console.log(query);
 
   try {
-    [result] = await connection(query, data);
-
+    [result] = await connection.query(query);
     res.status(200).json({
       success: true,
-      cnt: result[0].cnt,
+      cnt: "이 게시물을 " + result[0].cnt + "명이 좋아합니다",
     });
   } catch (e) {
     res.status(500).json({ success: false, error: e });

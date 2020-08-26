@@ -53,7 +53,7 @@ exports.uploadpost = async (req, res, next) => {
 //@request      user_id(auth), offset, limit
 //@response     success, items[], cnt
 
-exports.myPost = async (req, res, next) => {
+exports.mypost = async (req, res, next) => {
   let user_id = req.user.id;
   let offset = req.query.offset;
   let limit = req.query.limit;
@@ -78,7 +78,7 @@ exports.myPost = async (req, res, next) => {
 //@route                GET/api/v1/post/getfollowerpost?offset=0&limit=25
 //@request              user_id(auth)
 //@response             success, items[], cnt
-exports.getfollowerPost = async (req, res, next) => {
+exports.getallpost = async (req, res, next) => {
   let user_id = req.user.id;
   let offset = req.query.offset;
   let limit = req.query.limit;
