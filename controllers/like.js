@@ -78,6 +78,18 @@ exports.countlikepost = async (req, res, next) => {
   }
 };
 
+//@desc             게시물을 좋아요 한 유저의 목록 가져오기
+//@route            GET/api/v1/like/likepostuser/:post_id
+//@request          post_id
+//@response         success, items : rows
+exports.likepostuser = async(req, res, next)=>{
+  let post_id = req.params.post_id
+  
+}
+
+
+
+
 //@desc             댓글 좋아요 하기
 //@route            POST/api/v1/like/likecomment
 //@request          comment_id, user_id(auth)
