@@ -54,6 +54,29 @@ exports.deletelikepost = async (req, res, next) => {
   }
 };
 
+//@desc             게시글 1개의 총 좋아요 갯수 출력
+//@route            GET/api/v1/like/countlikepost/:post_id
+//@request          post_id
+//@response         success, cnt
+exports.countlikepost = async (req, res, next) => {
+  let post_id = req.params.post_id;
+  let query =
+    "select count(pl.post_id) as cnt \
+              from postlike as pl \
+              join post as p \
+              on pl.post_id = p.id \
+              where pl.post_id = ?";
+  let data = [post_id];
+  try {
+    [result] = await connection(query, data);
+    res
+      .status(200)
+      .json({ success: true, cnt: rows.length + "명이 좋아합니다" });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e });
+  }
+};
+
 //@desc             댓글 좋아요 하기
 //@route            POST/api/v1/like/likecomment
 //@request          comment_id, user_id(auth)

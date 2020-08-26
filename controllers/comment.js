@@ -92,11 +92,11 @@ exports.deletecomment = async (req, res, next) => {
 };
 
 //@desc             게시글의 댓글 불러오기(25개씩)
-//@route            GET/api/v1/comment/getcomment?offset=0&limit=25
+//@route            GET/api/v1/comment/getcomment/:post_id?offset=0&limit=25
 //@request          post_id, offset, limit
 //@response         success, items, cnt
 exports.getcomment = async (req, res, next) => {
-  let post_id = req.body.post_id;
+  let post_id = req.params.post_id;
   let offset = req.query.offset;
   let limit = req.query.limit;
 
@@ -104,9 +104,11 @@ exports.getcomment = async (req, res, next) => {
     "select c.post_id, \
                 u.user_profilephoto, u.user_name, \
                 c.comment, c.created_at \
-                from user as u \
+                from post as p \
                 join comment as c \
-                on u.id = c.user_id \
+                on p.id = c.post_id \
+                join user as u \
+                on c.user_id = u.id \
                 where c.post_id = ? \
                 order by c.created_at desc \
                 limit ?,?";
@@ -115,7 +117,28 @@ exports.getcomment = async (req, res, next) => {
 
   try {
     [rows] = await connection.query(query, data);
+    console.log(post_id);
     res.status(200).json({ success: true, items: rows, cnt: rows.length });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e });
+  }
+};
+
+//@desc             게시글 1개의 총 댓글 수 출력
+//@route            GET/api/v1/comment/countcomment/:post_id
+//@request          post_id
+//@response         success, cnt
+exports.countcomment = async (req, res, next) => {
+  let post_id = req.query.post_id;
+  let query =
+    "select count(c.id)as cnt \
+              from comment as c \
+              join post as p \
+              on c.post_id = p.id";
+  let data = [post_id];
+  try {
+    [result] = await connection.query(query, data);
+    res.status(200).json({ success: true, cnt: "댓글" + rows.length + "개" });
   } catch (e) {
     res.status(500).json({ success: false, error: e });
   }
