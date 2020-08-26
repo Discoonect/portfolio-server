@@ -67,11 +67,14 @@ exports.countlikepost = async (req, res, next) => {
               on pl.post_id = p.id \
               where pl.post_id = ?";
   let data = [post_id];
+
   try {
     [result] = await connection(query, data);
-    res
-      .status(200)
-      .json({ success: true, cnt: rows.length + "명이 좋아합니다" });
+
+    res.status(200).json({
+      success: true,
+      cnt: result[0].cnt,
+    });
   } catch (e) {
     res.status(500).json({ success: false, error: e });
   }

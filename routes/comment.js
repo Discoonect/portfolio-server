@@ -16,5 +16,5 @@ router.route("/addcomment").post(auth, addcomment);
 router.route("/updatecomment").put(auth, updatecomment);
 router.route("/deletecomment").delete(auth, deletecomment);
 router.route("/getcomment/:post_id").get(auth, getcomment);
-router.route("/countcomment/:post_id").get(auth, countcomment);
+router.route("/countcomment/:post_id").get(countcomment);
 module.exports = router;

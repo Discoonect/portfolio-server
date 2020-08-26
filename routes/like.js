@@ -3,9 +3,9 @@ const express = require("express");
 const {
   likepost,
   deletelikepost,
+  countlikepost,
   likecomment,
   deletelikecomment,
-  countlikepost,
 } = require("../controllers/like");
 
 const auth = require("../middleware/auth");

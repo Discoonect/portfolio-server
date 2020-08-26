@@ -129,16 +129,17 @@ exports.getcomment = async (req, res, next) => {
 //@request          post_id
 //@response         success, cnt
 exports.countcomment = async (req, res, next) => {
-  let post_id = req.query.post_id;
+  let post_id = req.params.post_id;
   let query =
-    "select count(c.id)as cnt \
+    "select count(c.post_id)as cnt \
               from comment as c \
               join post as p \
-              on c.post_id = p.id";
+              on c.post_id = p.id \
+              where c.post_id=?";
   let data = [post_id];
   try {
     [result] = await connection.query(query, data);
-    res.status(200).json({ success: true, cnt: "댓글" + rows.length + "개" });
+    res.status(200).json({ success: true, cnt: "댓글" + result[0].cnt + "개" });
   } catch (e) {
     res.status(500).json({ success: false, error: e });
   }
