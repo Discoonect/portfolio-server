@@ -88,7 +88,7 @@ exports.getallpost = async (req, res, next) => {
     return;
   }
   let query =
-    "select p.id as post_id, u.user_name, u.user_profilephoto, \
+    "select p.id as post_id, u.id as user_id, u.user_name, u.user_profilephoto, \
     p.photo_url, p.content, p.created_at, \
     case when pl.post_id is null then 0 \
     else 1 end as 'mylike', \

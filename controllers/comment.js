@@ -91,7 +91,7 @@ exports.deletecomment = async (req, res, next) => {
   }
 };
 
-//@desc             게시글의 댓글 불러오기(25개씩)
+//@desc             게시글의 댓글 보기(25개씩)
 //@route            GET/api/v1/comment/getcomment/:post_id?offset=0&limit=25
 //@request          post_id, offset, limit
 //@response         success, items, cnt
@@ -124,7 +124,7 @@ exports.getcomment = async (req, res, next) => {
   }
 };
 
-//@desc             게시글 1개의 총 댓글 수 출력
+//@desc             게시글 1개의 총 댓글 갯수 출력
 //@route            GET/api/v1/comment/countcomment/:post_id
 //@request          post_id
 //@response         success, cnt
