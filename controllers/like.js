@@ -71,7 +71,7 @@ exports.countlikepost = async (req, res, next) => {
     [result] = await connection.query(query);
     res.status(200).json({
       success: true,
-      cnt: "이 게시물을 " + result[0].cnt + "명이 좋아합니다",
+      cnt: result[0].cnt,
     });
   } catch (e) {
     res.status(500).json({ success: false, error: e });
