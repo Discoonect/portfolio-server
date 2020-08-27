@@ -6,6 +6,7 @@ const {
   countlikepost,
   likecomment,
   deletelikecomment,
+  getmylike,
 } = require("../controllers/like");
 
 const auth = require("../middleware/auth");

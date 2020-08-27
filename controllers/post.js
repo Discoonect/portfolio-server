@@ -90,6 +90,8 @@ exports.getallpost = async (req, res, next) => {
   let query =
     "select p.id as post_id, u.user_name, u.user_profilephoto, \
     p.photo_url, p.content, p.created_at, \
+    case when pl.post_id is null then 0 \
+    else 1 end as 'mylike' \
     count(distinct c.id) AS comment_cnt, \
     count(distinct pl.id) AS like_cnt \
     from follow as f \

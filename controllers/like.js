@@ -1,5 +1,6 @@
 const connection = require("../db/mysql_connection");
 
+
 //@desc             게시글 좋아요 하기
 //@route            POST/api/v1/like/likepost
 //@request          post_id, user_id(auth)
@@ -82,13 +83,9 @@ exports.countlikepost = async (req, res, next) => {
 //@route            GET/api/v1/like/likepostuser/:post_id
 //@request          post_id
 //@response         success, items : rows
-exports.likepostuser = async(req, res, next)=>{
-  let post_id = req.params.post_id
-  
-}
-
-
-
+exports.likepostuser = async (req, res, next) => {
+  let post_id = req.params.post_id;
+};
 
 //@desc             댓글 좋아요 하기
 //@route            POST/api/v1/like/likecomment
