@@ -29,7 +29,7 @@ exports.likepost = async (req, res, next) => {
 };
 
 //@desc             게시글 좋아요 취소
-//@route            DELETE/api/v1/like/deletelikepost
+//@route            POST/api/v1/like/deletelikepost
 //@request          post_id, user_id(auth)
 //@response         success
 exports.deletelikepost = async (req, res, next) => {
@@ -84,6 +84,21 @@ exports.countlikepost = async (req, res, next) => {
 //@response         success, items : rows
 exports.likepostuser = async (req, res, next) => {
   let post_id = req.params.post_id;
+  let query =
+    "select u.user_profilephoto, u.user_name, \
+              pl.created_at as postliketime \
+              from postlike as pl \
+              join user as u \
+              on pl.user_id = u.id \
+              where pl.post_id = ? \
+              order by pl.created_at desc";
+  let data = [post_id];
+  try {
+    [rows] = await connection.query(query, data);
+    res.status(200).json({ success: true, items: rows });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e });
+  }
 };
 
 //@desc             댓글 좋아요 하기
