@@ -109,9 +109,7 @@ exports.getallpost = async (req, res, next) => {
     limit ?,?;";
 
   let data = [user_id, Number(offset), Number(limit)];
-  let cnt;
-
-  try {
+    try {
     [rows] = await connection.query(query, data);
     res.status(200).json({ success: true, items: rows, cnt: rows.length });
   } catch (e) {
