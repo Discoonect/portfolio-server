@@ -121,9 +121,12 @@ exports.login = async (req, res, next) => {
   data = [token, user_id];
   try {
     [result] = await connection.query(query, data);
-    res
-      .status(200)
-      .json({ success: true, token: token, message: "로그인 성공!" });
+    res.status(200).json({
+      success: true,
+      token: token,
+      user_id: user_id,
+      message: "로그인 성공!",
+    });
   } catch (e) {
     res.status(500).json({ success: false, error: "오류" });
   }

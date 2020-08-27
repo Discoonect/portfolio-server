@@ -3,7 +3,7 @@ const path = require("path");
 const { runInNewContext } = require("vm");
 
 //@desc             팔로우 하기
-//@route            POST/api/v1/follow
+//@route            POST/api/v1/follow/following
 //@request          user_id(auth), following_id
 //@response         success
 
@@ -27,7 +27,7 @@ exports.following = async (req, res, next) => {
 };
 
 //@desc             팔로우 취소
-//@route            DELETE/api/v1/deletefollow
+//@route            DELETE/api/v1/follow/deletefollow
 //@request          user_id(auth), following_id
 //@response         success
 exports.deletefollow = async (req, res, next) => {
@@ -48,3 +48,11 @@ exports.deletefollow = async (req, res, next) => {
     res.status(500).json({ success: false, error: e });
   }
 };
+//@desc             내가 팔로우 한 유저 목록 보기(팔로잉)
+//@route            GET/api/v1/follow/myfollowing
+//@request          user_id(auth), following_id
+//@response         success, items
+exports.myfollowing = async (req, res, next) => {
+  let user_id = req.user.id
+  let query = ""
+}
