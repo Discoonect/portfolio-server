@@ -53,6 +53,27 @@ exports.deletefollow = async (req, res, next) => {
 //@request          user_id(auth), following_id
 //@response         success, items
 exports.myfollowing = async (req, res, next) => {
-  let user_id = req.user.id
-  let query = ""
-}
+  let user_id = req.user.id;
+  let offset = req.query.offset;
+  let limit = req.query.limit;
+
+  if (!user_id || !offset || !limit) {
+    res.status(400).json({ success: false, message: "파라미터 오류" });
+  }
+  let query =
+    "select u.user_name, f.user_id, \
+              u.user_profilephoto, \
+              f.following_id \
+              from follow as f \
+              join user as u \
+              on f.following_id = u.id \
+              where f.user_id = ? \
+              limit ?,?";
+  let data = [user_id, Number(offset), Number(limit)];
+  try {
+    [rows] = await connection.query(query, data);
+    res.status(200).json({ success: true, items: rows });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e });
+  }
+};
