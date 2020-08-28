@@ -98,8 +98,8 @@ exports.myfollower = async (req, res, next) => {
                 f.following_id \
                 from follow as f \
                 join user as u \
-                on u.id = f.following_id \
-                where following_id = ? \
+                on u.id = f.user_id \
+                where f.following_id = ? \
                 limit ?,?";
   let data = [user_id, Number(offset), Number(limit)];
 
