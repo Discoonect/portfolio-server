@@ -16,5 +16,5 @@ router.route("/uploadpost").post(auth, uploadpost);
 router.route("/mypost").get(auth, mypost);
 router.route("/getallpost").get(auth, getallpost);
 router.route("/updatepost/:post_id").put(auth, updatepost);
-router.route("/deletepost/:post_id").delete(auth, deletepost);
+router.route("/deletepost/:post_id").post(auth, deletepost);
 module.exports = router;
