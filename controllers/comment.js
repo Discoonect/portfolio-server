@@ -1,4 +1,5 @@
 const connection = require("../db/mysql_connection");
+const { updatepost } = require("./post");
 
 //@desc             댓글달기
 //@route            POST/api/v1/comment/addcomment
@@ -91,7 +92,7 @@ exports.deletecomment = async (req, res, next) => {
   }
 };
 
-//@desc             게시글의 댓글 보기(25개씩)
+//@desc             게시글의 댓글 보기&총 댓글개수 가져오기(25개씩)
 //@route            GET/api/v1/comment/getcomment/:post_id?offset=0&limit=25
 //@request          post_id, offset, limit
 //@response         success, items, cnt
@@ -101,8 +102,8 @@ exports.getcomment = async (req, res, next) => {
   let limit = req.query.limit;
 
   let query =
-    "select c.post_id, \
-                u.user_profilephoto, u.user_name, \
+    "select c.id as comment_id, c.post_id as post_id, \
+                u.id as user_id, u.user_profilephoto, u.user_name, \
                 c.comment, c.created_at \
                 from post as p \
                 join comment as c \
@@ -110,6 +111,7 @@ exports.getcomment = async (req, res, next) => {
                 join user as u \
                 on c.user_id = u.id \
                 where c.post_id = ? \
+                group by c.id \
                 order by c.created_at desc \
                 limit ?,?";
 
@@ -117,7 +119,6 @@ exports.getcomment = async (req, res, next) => {
 
   try {
     [rows] = await connection.query(query, data);
-    console.log(post_id);
     res.status(200).json({ success: true, items: rows, cnt: rows.length });
   } catch (e) {
     res.status(500).json({ success: false, error: e });
@@ -139,7 +140,7 @@ exports.countcomment = async (req, res, next) => {
   let data = [post_id];
   try {
     [result] = await connection.query(query, data);
-    res.status(200).json({ success: true, cnt: "댓글" + result[0].cnt + "개" });
+    res.status(200).json({ success: true, cnt: result[0].cnt });
   } catch (e) {
     res.status(500).json({ success: false, error: e });
   }
