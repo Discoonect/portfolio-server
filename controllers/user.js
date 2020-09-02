@@ -183,7 +183,7 @@ exports.adios = async (req, res, next) => {
 //@desc             내 피드에서 이름, 사진, 팔로워 표시 가져오기
 //@route            GET/api/v1/user/mypage
 //@request          user_name(auth)
-//@response         success, items : rows
+//@response         success, items
 exports.mypage = async (req, res, next) => {
   let user_id = req.user.id;
   let query =
@@ -206,8 +206,22 @@ exports.mypage = async (req, res, next) => {
 //@desc             내 피드에서 게시글, 팔로잉 표시 가져오기
 //@route            GET/api/v1/user/mypage2
 //@request          user_name(auth)
-//@response         success, items : rows
+//@response         success, items
 exports.mypage2 = async (req, res, next) => {
   let user_id = req.user.id;
-  //let query =
+  let query =
+    "select \
+              (select count(*)from post where post.user_id = 2)as cnt_post, \
+              count(distinct f.following_id)as following \
+              from follow as f \
+              join user as u \
+              on f.user_id = u.id \
+              where f.user_id = ?";
+  let data = [user_id];
+  try {
+    [rows] = await connection.query(query, data);``
+    res.status(200).json({ success: true, items: rows });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e });
+  }
 };
