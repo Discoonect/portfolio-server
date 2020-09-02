@@ -180,11 +180,11 @@ exports.adios = async (req, res, next) => {
   }
 };
 
-//@desc             유저의 피드에서 이름, 사진, 팔로워 표시 가져오기
-//@route            GET/api/v1/user/userprofile
+//@desc             내 피드에서 이름, 사진, 팔로워 표시 가져오기
+//@route            GET/api/v1/user/myspace
 //@request          user_name(auth), user_profilephoto, following
 //@response         success, items : rows
-exports.userprofile = async (req, res, next) => {
+exports.myspace = async (req, res, next) => {
   let user_id = req.user.id;
   let query =
     "select u.user_name, u.user_profilephoto, \
@@ -202,3 +202,8 @@ exports.userprofile = async (req, res, next) => {
     res.status(500).json({ success: false, error: e });
   }
 };
+
+//@desc             내 피드에서 게시글, 팔로잉 표시 가져오기
+//@route            GET/api/v1/user/myspace2
+//@request          user_name(auth), user_profilephoto, following
+//@response         success, items : rows
