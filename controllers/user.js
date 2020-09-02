@@ -182,7 +182,7 @@ exports.adios = async (req, res, next) => {
 
 //@desc             내 피드에서 이름, 사진, 팔로워 표시 가져오기
 //@route            GET/api/v1/user/myspace
-//@request          user_name(auth), user_profilephoto, following
+//@request          user_name(auth)
 //@response         success, items : rows
 exports.myspace = async (req, res, next) => {
   let user_id = req.user.id;
@@ -205,5 +205,9 @@ exports.myspace = async (req, res, next) => {
 
 //@desc             내 피드에서 게시글, 팔로잉 표시 가져오기
 //@route            GET/api/v1/user/myspace2
-//@request          user_name(auth), user_profilephoto, following
+//@request          user_name(auth)
 //@response         success, items : rows
+exports.myspace2 = async(req, res, next)=>{
+  let user_id = req.user.id
+  let query =  
+}
