@@ -179,3 +179,26 @@ exports.adios = async (req, res, next) => {
     conn.release();
   }
 };
+
+//@desc             유저의 피드에서 이름, 사진, 팔로워 표시 가져오기
+//@route            GET/api/v1/user/userprofile
+//@request          user_name(auth), user_profilephoto, following
+//@response         success, items : rows
+exports.userprofile = async (req, res, next) => {
+  let user_id = req.user.id;
+  let query =
+    "select u.user_name, u.user_profilephoto, \
+              count(f.following_id) as follower \
+              from user as u \
+              join follow as f \
+              on u.id = f.user_id \
+              where u.id = ? ";
+
+  let data = [user_id];
+  try {
+    [rows] = await connection.query(query, data);
+    res.status(200).json({ success: true, items: rows });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e });
+  }
+};
