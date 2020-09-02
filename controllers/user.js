@@ -191,8 +191,8 @@ exports.mypage = async (req, res, next) => {
               count(f.following_id) as follower \
               from user as u \
               join follow as f \
-              on u.id = f.user_id \
-              where u.id = ? ";
+              on u.id = f.following_id \
+              where f.following_id = ? ";
 
   let data = [user_id];
   try {
