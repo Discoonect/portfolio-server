@@ -9,7 +9,7 @@ exports.searchuser = async (req, res, next) => {
   let offset = req.query.offset;
   let limit = req.query.limit;
   let query = `select u.user_name, u.user_profilephoto \
-                from user as u \
+                from user as u \ 
                 where u.user_name like  %${user}%" \
                 limit ${offset}, ${limit}`;
   try {

@@ -221,7 +221,7 @@ exports.getonepost = async (req, res, next) => {
 
 //@desc         피드에 게시된 사진 목록표시(25개씩)
 //@route        GET/api/v1/post/getpostphotourl/:user_id?offset=0&limit=25
-//@request      user_id(auth), offset, limit
+//@request      user_id, offset, limit
 //@response     success, items[], cnt
 exports.getpostphotourl = async (req, res, next) => {
   let user_id = req.params.user_id;
