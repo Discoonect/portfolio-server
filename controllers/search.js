@@ -15,9 +15,9 @@ exports.searchuser = async (req, res, next) => {
                 limit ${offset}, ${limit}`;
   try {
     [rows] = await connection.query(query);
-    if (validator.contains("@" + user)) {
+    //if (validator.contains("@"+user)) {
       res.status(200).json({ success: true, items: rows });
-    }
+   // }
   } catch (e) {
     res.status(500).json({ success: false, error: e });
   }
