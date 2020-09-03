@@ -48,11 +48,10 @@ exports.uploadpost = async (req, res, next) => {
   }
 };
 
-//@desc         내가 작성한 포스팅 가져오기(25개씩)
+//@desc         내 피드에 작성한 게시글 사진 목록표시(25개씩)
 //@route        GET/api/v1/post/mypost?offset=0&limit=25
 //@request      user_id(auth), offset, limit
 //@response     success, items[], cnt
-
 exports.mypost = async (req, res, next) => {
   let user_id = req.user.id;
   let offset = req.query.offset;
@@ -63,14 +62,18 @@ exports.mypost = async (req, res, next) => {
     res.status(400).json({ success: false, message: "파라미터 오류" });
     return;
   }
-  let query = "select * from post where user_id = ? limit ?,?";
+  let query =
+    "select p.id, p.photo_url \
+              from post as p \
+              where user_id = ? \
+              limit ?,?";
   let data = [user_id, Number(offset), Number(limit)];
 
   try {
     [rows] = await connection.query(query, data);
-    res.status(200).json({ success: true, items: rows, cnt: rows.length });
+    res.status(200).json({ success: true, items: rows });
   } catch (e) {
-    res.status(500).json({ success: false, message: "불러올 수 없습니다" });
+    res.status(500).json({ success: false, error: e });
   }
 };
 
