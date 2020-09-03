@@ -3,7 +3,7 @@ const path = require("path");
 const { runInNewContext } = require("vm");
 
 //@desc             사진과 내용 업로드
-//@route            POST/api/v1/post
+//@route            POST/api/v1/post/uploadpost
 //@request          photo, content, user_id(auth)
 //@response         success
 
@@ -66,6 +66,7 @@ exports.mypost = async (req, res, next) => {
     "select p.id, p.photo_url \
               from post as p \
               where user_id = ? \
+              order by p.created_at desc\
               limit ?,?";
   let data = [user_id, Number(offset), Number(limit)];
 
@@ -77,8 +78,8 @@ exports.mypost = async (req, res, next) => {
   }
 };
 
-//@desc                 친구들의 게시글 불러오기(25개씩)
-//@route                GET/api/v1/post/getfollowerpost?offset=0&limit=25
+//@desc                 친구들과 나의 게시글 불러오기(25개씩)
+//@route                GET/api/v1/post/getallpost?offset=0&limit=25
 //@request              user_id(auth)
 //@response             success, items[], cnt
 exports.getallpost = async (req, res, next) => {
@@ -120,10 +121,10 @@ exports.getallpost = async (req, res, next) => {
   }
 };
 
-//@desc         게시글 수정
-//@route        PUT/api/v1/updatepost/:post_id
-//@request      user_id(auth), photo, content
-//@response     success
+//@desc                  게시글 수정
+//@route                 PUT/api/v1/post/updatepost/:post_id
+//@request               user_id(auth), photo, content
+//@response              success
 exports.updatepost = async (req, res, next) => {
   let post_id = req.params.post_id;
   let user_id = req.user.id;
@@ -176,10 +177,10 @@ exports.updatepost = async (req, res, next) => {
   }
 };
 
-//@desc         게시글 삭제
-//@route        DELETE/api/v1/deletepost/:post_id
-//@request      user_id(auth), post_id
-//@response     success
+//@desc                   게시글 삭제
+//@route                  DELETE/api/v1/post/deletepost/:post_id
+//@request                user_id(auth), post_id
+//@response               success
 exports.deletepost = async (req, res, next) => {
   let post_id = req.params.post_id;
   let user_id = req.user.id;
@@ -215,3 +216,8 @@ exports.deletepost = async (req, res, next) => {
     return;
   }
 };
+
+//@desc                   내가 작성한 게시글 보기
+//@route                  GET/api/v1/post/mypost/:post_id
+//@request                user_id(auth), post_id
+//@response               success
