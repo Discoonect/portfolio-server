@@ -2,13 +2,12 @@ const express = require("express");
 
 const {
   uploadpost,
-  getmypost,
+
   updatepost,
   deletepost,
   getallpost,
-  mypost,
-  getuserpost,
-  userpost
+  getonepost,
+  getpostphotourl,
 } = require("../controllers/post");
 
 const auth = require("../middleware/auth");
@@ -16,11 +15,9 @@ const auth = require("../middleware/auth");
 const router = express.Router();
 
 router.route("/uploadpost").post(auth, uploadpost);
-router.route("/getmypost").get(auth, getmypost);
-router.route("/mypost/:post_id").get(auth, mypost);
+router.route("/getpostphotourl/:user_id").get(auth, getpostphotourl);
+router.route("/getonepost/:post_id").get(auth, getonepost);
 router.route("/getallpost").get(auth, getallpost);
-router.route("/getuserpost/:user_id").get(getuserpost)
-router.route("/userpost/:post_id").get(userpost)
 router.route("/updatepost/:post_id").put(auth, updatepost);
 router.route("/deletepost/:post_id").post(auth, deletepost);
 module.exports = router;
