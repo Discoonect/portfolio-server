@@ -7,6 +7,8 @@ const {
   deletepost,
   getallpost,
   mypost,
+  getuserpost,
+  userpost
 } = require("../controllers/post");
 
 const auth = require("../middleware/auth");
@@ -17,6 +19,8 @@ router.route("/uploadpost").post(auth, uploadpost);
 router.route("/getmypost").get(auth, getmypost);
 router.route("/mypost/:post_id").get(auth, mypost);
 router.route("/getallpost").get(auth, getallpost);
+router.route("/getuserpost/:user_id").get(getuserpost)
+router.route("/userpost/:post_id").get(userpost)
 router.route("/updatepost/:post_id").put(auth, updatepost);
 router.route("/deletepost/:post_id").post(auth, deletepost);
 module.exports = router;

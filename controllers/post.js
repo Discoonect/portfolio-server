@@ -249,3 +249,65 @@ exports.mypost = async (req, res, next) => {
     res.status(500).json({ success: false, error: e });
   }
 };
+
+//@desc         다른유저의 피드에 게시된 사진 목록표시(25개씩)
+//@route        GET/api/v1/post/getuserpost/:user_id?offset=0&limit=25
+//@request      user_id, offset, limit
+//@response     success, items
+exports.getuserpost = async (req, res, next) => {
+  let user_id = req.params.user_id;
+  let offset = req.query.offset;
+  let limit = req.query.limit;
+
+  if (!user_id || !offset || !limit) {
+    res.status(400).json({ success: false, message: "파라미터 오류" });
+    return;
+  }
+  let query =
+    "select p.id, p.photo_url \
+              from post as p \
+              where user_id = ? \
+              order by p.created_at desc\
+              limit ?,?";
+  let data = [user_id, Number(offset), Number(limit)];
+
+  try {
+    [rows] = await connection.query(query, data);
+    res.status(200).json({ success: true, items: rows });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e });
+  }
+};
+
+//@desc                   다른유저가 작성한 게시글 보기(1개)
+//@route                  GET/api/v1/post/userpost/:post_id
+//@request                post_id
+//@response               success, items
+exports.userpost = async (req, res, next) => {
+  let post_id = req.params.post_id;
+
+  let query =
+    "select p.id as post_id, \
+    u.id as user_id, u.user_name, u.user_profilephoto, \
+      p.photo_url, p.content, p.created_at, \
+      case when pl.post_id is null then 0 \
+      else 1 end as 'mylike', \
+      count(distinct c.id) AS comment_cnt, \
+      count(distinct pl.id) AS like_cnt \
+      from post as p \
+      join user as u \
+      on p.user_id = u.id \
+      left join postlike as pl \
+      on pl.post_id = p.id \
+      left join comment as c \
+      on p.id = c.post_id \
+      where p.id = ?";
+
+  let data = [post_id];
+  try {
+    [rows] = await connection.query(query, data);
+    res.status(200).json({ success: true, items: rows });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e });
+  }
+};
