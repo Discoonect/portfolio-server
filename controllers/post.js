@@ -49,10 +49,10 @@ exports.uploadpost = async (req, res, next) => {
 };
 
 //@desc         내 피드에 작성한 게시글 사진 목록표시(25개씩)
-//@route        GET/api/v1/post/mypost?offset=0&limit=25
+//@route        GET/api/v1/post/getmypost?offset=0&limit=25
 //@request      user_id(auth), offset, limit
 //@response     success, items[], cnt
-exports.mypost = async (req, res, next) => {
+exports.getmypost = async (req, res, next) => {
   let user_id = req.user.id;
   let offset = req.query.offset;
   let limit = req.query.limit;
@@ -218,6 +218,7 @@ exports.deletepost = async (req, res, next) => {
 };
 
 //@desc                   내가 작성한 게시글 보기
-//@route                  GET/api/v1/post/mypost/:post_id
+//@route                  GET/api/v1/post/getmypost/:post_id
 //@request                user_id(auth), post_id
-//@response               success
+//@response               success, items
+//exports.
