@@ -49,7 +49,7 @@ exports.uploadpost = async (req, res, next) => {
 };
 
 //@desc         내가 작성한 포스팅 가져오기(25개씩)
-//@route        GET/api/v1/post/me?offset=0&limit=25
+//@route        GET/api/v1/post/mypost?offset=0&limit=25
 //@request      user_id(auth), offset, limit
 //@response     success, items[], cnt
 
@@ -109,7 +109,7 @@ exports.getallpost = async (req, res, next) => {
     limit ?,?;";
 
   let data = [user_id, Number(offset), Number(limit)];
-    try {
+  try {
     [rows] = await connection.query(query, data);
     res.status(200).json({ success: true, items: rows, cnt: rows.length });
   } catch (e) {
