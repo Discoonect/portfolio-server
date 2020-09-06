@@ -7,7 +7,7 @@ const connection = require("../db/mysql_connection");
 //@desc             회원가입
 //@route            POST/api/v1/user
 //@request          user_name, user_passwd, user_phone, user_nickname
-//@response
+//@response         success, token
 exports.signup = async (req, res, next) => {
   let name = req.body.user_name;
   let passwd = req.body.user_passwd;
@@ -225,3 +225,4 @@ exports.mypage2 = async (req, res, next) => {
     res.status(500).json({ success: false, error: e });
   }
 };
+
