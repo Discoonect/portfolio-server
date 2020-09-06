@@ -219,7 +219,7 @@ exports.mypage2 = async (req, res, next) => {
               where f.user_id = ?";
   let data = [user_id];
   try {
-    [rows] = await connection.query(query, data);``
+    [rows] = await connection.query(query, data);
     res.status(200).json({ success: true, items: rows });
   } catch (e) {
     res.status(500).json({ success: false, error: e });
