@@ -248,3 +248,24 @@ exports.getpostphotourl = async (req, res, next) => {
     res.status(500).json({ success: false, error: e });
   }
 };
+
+//@desc         좋아요가 100개 이상인 인기 게시물 표시
+//@route        GET/api/v1/post/bestpost
+//@request      post_id
+//@response     success, items
+exports.bestpost = async (req, res, next) => {
+  let offset = req.query.offset;
+  let limit = req.query.limit;
+  let query = `select p.id, p.photo_url from post as p \
+                join postlike as pl \
+                on p.id = pl.post_id \
+                group by pl.post_id \
+                having count(pl.post_id)>=4 \
+                limit ${offset}, ${limit}`;
+  try {
+    [rows] = await connection.query(query);
+    res.status(200).json({ success: true, items: rows });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e });
+  }
+};
