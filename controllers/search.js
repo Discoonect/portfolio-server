@@ -2,23 +2,25 @@ const connection = require("../db/mysql_connection");
 const validator = require("validator");
 
 //@desc             유저 검색
-//@route            GET/api/v1/searchuser?user=@a
+//@route            GET/api/v1/searchuser?keyword=@a&offset=0&limit=25
 //@request          user_id
 //@response         success, items
 exports.searchuser = async (req, res, next) => {
-  let user = req.query.user;
+  let keyword = req.query.keyword;
   let offset = req.query.offset;
   let limit = req.query.limit;
-  let string = "@"
+
   let query = `select u.user_name, u.user_profilephoto \
                 from user as u \ 
-                where u.user_name like "%${user}%" \
+                where u.user_name like "%${keyword}%" \
                 limit ${offset}, ${limit}`;
+
   try {
-    [rows] = await connection.query(query);
-    if (user.includes(string)==true) {
-      res.status(200).json({ success: true, items: rows });
-   }
+    //let search = keyword.split("@");
+    //let search_array = keyword.split("@");
+    //keyword = search_array[1];
+    [rows] = await connection.query(query, keyword);
+    res.status(200).json({ success: true, items: rows });
   } catch (e) {
     res.status(500).json({ success: false, error: e });
   }
