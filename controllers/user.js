@@ -226,3 +226,19 @@ exports.mypage2 = async (req, res, next) => {
   }
 };
 
+//@desc             한줄소개 작성
+//@route            PUT/api/v1/user/myintroduce
+//@request          user_name(auth), introduce
+//@response         success
+exports.myintroduce = async (req, res, next) => {
+  let user_id = req.user.id;
+  let introduce = req.body.introduce;
+  let query = `update user set introduce= "${introduce}" where id=${user_id}`;
+
+  try {
+    [result] = await connection.query(query);
+    res.status(200).json({ success: true, message: "작성되었습니다!" });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e });
+  }
+};

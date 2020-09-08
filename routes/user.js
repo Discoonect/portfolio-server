@@ -8,6 +8,7 @@ const {
   checkid,
   mypage,
   mypage2,
+  myintroduce,
 } = require("../controllers/user");
 
 const auth = require("../middleware/auth");
@@ -20,5 +21,6 @@ router.route("/logout").delete(auth, logout);
 router.route("/adios").delete(auth, adios);
 router.route("/mypage").get(auth, mypage);
 router.route("/mypage2").get(auth, mypage2);
+router.route("/myintroduce").put(auth, myintroduce);
 
 module.exports = router;
