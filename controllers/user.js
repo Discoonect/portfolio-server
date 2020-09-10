@@ -211,13 +211,13 @@ exports.mypage2 = async (req, res, next) => {
   let user_id = req.user.id;
   let query =
     "select \
-              (select count(*)from post where post.user_id = 2)as cnt_post, \
+              (select count(*)from post where post.user_id = ?)as cnt_post, \
               count(distinct f.following_id)as following \
               from follow as f \
               join user as u \
               on f.user_id = u.id \
               where f.user_id = ?";
-  let data = [user_id];
+  let data = [user_id, user_id];
   try {
     [rows] = await connection.query(query, data);
     res.status(200).json({ success: true, items: rows });
