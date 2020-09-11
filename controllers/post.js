@@ -190,28 +190,31 @@ exports.deletepost = async (req, res, next) => {
 
 //@desc                   게시글 1개 보기
 //@route                  GET/api/v1/post/getonepost/:post_id
-//@request                post_id
+//@request                user_id(auth), post_id
 //@response               success, items
 exports.getonepost = async (req, res, next) => {
+  let user_id = req.user.id;
   let post_id = req.params.post_id;
   let query =
-    "select p.id as post_id, \
-    u.id as user_id, u.user_name, u.user_profilephoto, \
-      p.photo_url, p.content, p.created_at, \
-      case when pl.post_id is null then 0 \
-      else 1 end as 'mylike', \
-      count(distinct c.id) AS comment_cnt, \
-      count(distinct pl.id) AS like_cnt \
-      from post as p \
-      join user as u \
-      on p.user_id = u.id \
-      left join postlike as pl \
-      on pl.post_id = p.id \
-      left join comment as c \
-      on p.id = c.post_id \
-      where p.id = ?";
+    "select p.id as post_id, p.user_id, \
+    u.user_name, u.user_profilephoto, \
+    p.photo_url, p.content, p.created_at, \
+    if(pl.id is null, 0, 1)as mylike, \
+    count(distinct c.id)as comment_cnt, \
+    count(distinct pl2.user_id)as like_cnt \
+    from post as p \
+    left join postlike as pl \
+    on pl.user_id = ? and p.id = pl.post_id \
+    left join postlike as pl2 \
+    on p.id = pl2.post_id \
+    left join comment as c \
+    on p.id = c.post_id \
+    join user as u \
+    on p.user_id = u.id \
+    where p.id = ? \
+    group by p.id";
 
-  let data = [post_id];
+  let data = [user_id, post_id];
   try {
     [rows] = await connection.query(query, data);
     res.status(200).json({ success: true, items: rows });
