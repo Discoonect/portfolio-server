@@ -14,7 +14,7 @@ exports.search = async (req, res, next) => {
   if (keyword.substring(keyword.length0, 1) == "@") {
     let search_array = keyword.split("@");
     keyword = search_array[1];
-    query = `select u.user_name, u.user_profilephoto \
+    query = `select u.id,u.user_name, u.user_profilephoto \
                 from user as u \ 
                 where u.user_name like "%${keyword}%" \
                 limit ${offset}, ${limit}`;
