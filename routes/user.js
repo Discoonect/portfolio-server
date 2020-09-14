@@ -10,6 +10,7 @@ const {
   mypage2,
   myintroduce,
   profilephoto,
+  deleteprofilephoto,
 } = require("../controllers/user");
 
 const auth = require("../middleware/auth");
@@ -24,5 +25,6 @@ router.route("/mypage").get(auth, mypage);
 router.route("/mypage2").get(auth, mypage2);
 router.route("/myintroduce").put(auth, myintroduce);
 router.route("/profilephoto").post(auth, profilephoto);
+router.route("/deleteprofilephoto").delete(auth, deleteprofilephoto);
 
 module.exports = router;

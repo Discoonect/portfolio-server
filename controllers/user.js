@@ -181,7 +181,7 @@ exports.adios = async (req, res, next) => {
   }
 };
 
-//@desc             내 피드에서 이름, 사진, 팔로워 표시 가져오기
+//@desc             내 피드에서 이름, 사진, 팔로워, 한줄소개 표시
 //@route            GET/api/v1/user/mypage
 //@request          user_name(auth)
 //@response         success, items
@@ -189,7 +189,8 @@ exports.mypage = async (req, res, next) => {
   let user_id = req.user.id;
   let query =
     "select u.user_name, u.user_profilephoto, \
-              count(f.following_id) as follower \
+              count(f.following_id) as follower, \
+              introduce \
               from user as u \
               join follow as f \
               on u.id = f.following_id \
@@ -292,3 +293,18 @@ exports.profilephoto = async (req, res, next) => {
 //@route            DELETE/api/v1/user/deleteprofilephoto
 //@request          user_id(auth)
 //@response         success
+exports.deleteprofilephoto = async (req, res, next) => {
+  let user_id = req.user.id;
+
+  let query = "update user set user_profilephoto = null where id = ?";
+  let data = [user_id];
+
+  try {
+    [result] = await connection.query(query, data);
+    res
+      .status(200)
+      .json({ success: true, message: "기본이미지로 변경되었습니다" });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e });
+  }
+};
