@@ -1,5 +1,6 @@
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
+const path = require("path");
 const jwt = require("jsonwebtoken");
 
 const connection = require("../db/mysql_connection");
@@ -242,3 +243,52 @@ exports.myintroduce = async (req, res, next) => {
     res.status(500).json({ success: false, error: e });
   }
 };
+
+//@desc             프로필사진 등록
+//@route            POST/api/v1/user/profilephoto
+//@request          photo, user_id(auth)
+//@response         success
+exports.profilephoto = async (req, res, next) => {
+  let user_id = req.user.id;
+  let photo = req.files.photo;
+
+  if (photo.mimetype.startsWith("image") == false) {
+    res
+      .status(400)
+      .json({ success: false, message: "사진파일 형식이 아닙니다" });
+    return;
+  }
+  if (photo.size > process.env.MAX_FILE_SIZE) {
+    res
+      .status(400)
+      .json({ success: false, error: e, message: "파일 크기가 큽니다" });
+    return;
+  }
+  photo.name = `photo_${user_id}_${Date.now()}${path.parse(photo.name).ext}`;
+  let fileUploadPath = `${process.env.FILE_UPLOAD_PATH}/${photo.name}`;
+
+  photo.mv(fileUploadPath, async (err) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+  });
+  let query = "update user set user_profilephoto = ? where id = ?";
+  let data = [photo.name, user_id];
+
+  try {
+    [result] = await connection.query(query, data);
+    res
+      .status(200)
+      .json({ success: true, message: "프로필 사진이 등록되었습니다" });
+    return;
+  } catch (e) {
+    res.status(500).json({ success: false, error: e, message: "업로드 실패" });
+    return;
+  }
+};
+
+//@desc             프로필사진 삭제(기본이미지로 변경)
+//@route            DELETE/api/v1/user/deleteprofilephoto
+//@request          user_id(auth)
+//@response         success

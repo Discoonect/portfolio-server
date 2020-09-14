@@ -124,7 +124,7 @@ exports.updatepost = async (req, res, next) => {
     return;
   }
   //사진파일 이름 생성(유저아이디 & 현재날짜)
-  photo.name = `photo_${user_id}_${Date.now()}&${path.parse(photo.name).ext}`;
+  photo.name = `photo_${user_id}_${Date.now()}${path.parse(photo.name).ext}`;
 
   let fileUploadPath = `${process.env.FILE_UPLOAD_PATH}/${photo.name}`;
 
