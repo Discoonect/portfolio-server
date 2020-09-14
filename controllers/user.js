@@ -292,3 +292,18 @@ exports.profilephoto = async (req, res, next) => {
 //@route            DELETE/api/v1/user/deleteprofilephoto
 //@request          user_id(auth)
 //@response         success
+exports.deleteprofilephoto = async (req, res, next) => {
+  let user_id = req.user.id;
+
+  let query = "update user set user_profilephoto = null where id = ?";
+  let data = [user_id];
+
+  try {
+    [result] = await connection.query(query, data);
+    res
+      .status(200)
+      .json({ success: true, message: "기본이미지로 변경되었습니다" });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e });
+  }
+};
