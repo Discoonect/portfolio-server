@@ -7,7 +7,7 @@ const connection = require("../db/mysql_connection");
 //@desc             회원가입
 //@route            POST/api/v1/user
 //@request          user_name, user_passwd, user_phone, user_nickname
-//@response
+//@response         success, token
 exports.signup = async (req, res, next) => {
   let name = req.body.user_name;
   let passwd = req.body.user_passwd;
@@ -177,5 +177,68 @@ exports.adios = async (req, res, next) => {
     res.status(500).json({ success: false, error: e });
   } finally {
     conn.release();
+  }
+};
+
+//@desc             내 피드에서 이름, 사진, 팔로워 표시 가져오기
+//@route            GET/api/v1/user/mypage
+//@request          user_name(auth)
+//@response         success, items
+exports.mypage = async (req, res, next) => {
+  let user_id = req.user.id;
+  let query =
+    "select u.user_name, u.user_profilephoto, \
+              count(f.following_id) as follower \
+              from user as u \
+              join follow as f \
+              on u.id = f.following_id \
+              where f.following_id = ? ";
+
+  let data = [user_id];
+  try {
+    [rows] = await connection.query(query, data);
+    res.status(200).json({ success: true, items: rows });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e });
+  }
+};
+
+//@desc             내 피드에서 게시글, 팔로잉 표시 가져오기
+//@route            GET/api/v1/user/mypage2
+//@request          user_name(auth)
+//@response         success, items
+exports.mypage2 = async (req, res, next) => {
+  let user_id = req.user.id;
+  let query =
+    "select \
+              (select count(*)from post where post.user_id = ?)as cnt_post, \
+              count(distinct f.following_id)as following \
+              from follow as f \
+              join user as u \
+              on f.user_id = u.id \
+              where f.user_id = ?";
+  let data = [user_id, user_id];
+  try {
+    [rows] = await connection.query(query, data);
+    res.status(200).json({ success: true, items: rows });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e });
+  }
+};
+
+//@desc             한줄소개 작성
+//@route            PUT/api/v1/user/myintroduce
+//@request          user_name(auth), introduce
+//@response         success
+exports.myintroduce = async (req, res, next) => {
+  let user_id = req.user.id;
+  let introduce = req.body.introduce;
+  let query = `update user set introduce= "${introduce}" where id=${user_id}`;
+
+  try {
+    [result] = await connection.query(query);
+    res.status(200).json({ success: true, message: "작성되었습니다!" });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e });
   }
 };

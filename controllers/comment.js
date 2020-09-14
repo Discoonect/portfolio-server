@@ -60,7 +60,7 @@ exports.updatecomment = async (req, res, next) => {
 };
 
 //@desc             댓글삭제
-//@route            DELETE/api/v1/comment/deletecomment
+//@route            POST/api/v1/comment/deletecomment
 //@request          user_id(auth), comment_id
 //@response         success
 exports.deletecomment = async (req, res, next) => {
@@ -87,7 +87,7 @@ exports.deletecomment = async (req, res, next) => {
     res.status(200).json({ success: true, message: "댓글삭제 완료" });
     return;
   } catch (e) {
-    res.status(500).json({ success: false, error: e });
+    res.status(500).json({ success: false, error: e2 });
     return;
   }
 };
