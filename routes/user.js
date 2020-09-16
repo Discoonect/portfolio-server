@@ -11,6 +11,8 @@ const {
   myintroduce,
   profilephoto,
   deleteprofilephoto,
+  userpage,
+  userpage2,
 } = require("../controllers/user");
 
 const auth = require("../middleware/auth");
@@ -23,6 +25,8 @@ router.route("/logout").delete(auth, logout);
 router.route("/adios").delete(auth, adios);
 router.route("/mypage").get(auth, mypage);
 router.route("/mypage2").get(auth, mypage2);
+router.route("/userpage/:user_id").get(userpage);
+router.route("/userpage2/:user_id").get(userpage2);
 router.route("/myintroduce").put(auth, myintroduce);
 router.route("/profilephoto").post(auth, profilephoto);
 router.route("/deleteprofilephoto").delete(auth, deleteprofilephoto);
