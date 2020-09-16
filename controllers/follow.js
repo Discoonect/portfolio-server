@@ -69,6 +69,7 @@ exports.myfollowing = async (req, res, next) => {
               join user as u \
               on f.following_id = u.id \
               where f.user_id = ? and f.user_id != f.following_id \
+              order by u.user_name \
               limit ?,?";
   let data = [user_id, Number(offset), Number(limit)];
   try {
@@ -100,6 +101,7 @@ exports.myfollower = async (req, res, next) => {
                 join user as u \
                 on u.id = f.user_id \
                 where f.following_id = ? and f.user_id != f.following_id \
+                order by u.user_name \
                 limit ?,?";
   let data = [user_id, Number(offset), Number(limit)];
 
