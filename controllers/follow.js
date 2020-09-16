@@ -68,12 +68,13 @@ exports.myfollowing = async (req, res, next) => {
               from follow as f \
               join user as u \
               on f.following_id = u.id \
-              where f.user_id = ? \
+              where f.user_id = ? and f.user_id != f.following_id \
+              order by u.user_name \
               limit ?,?";
   let data = [user_id, Number(offset), Number(limit)];
   try {
     [rows] = await connection.query(query, data);
-    res.status(200).json({ success: true, items: rows });
+    res.status(200).json({ success: true, items: rows, cnt: rows.length });
   } catch (e) {
     res.status(500).json({ success: false, error: e });
   }
@@ -99,13 +100,14 @@ exports.myfollower = async (req, res, next) => {
                 from follow as f \
                 join user as u \
                 on u.id = f.user_id \
-                where f.following_id = ? \
+                where f.following_id = ? and f.user_id != f.following_id \
+                order by u.user_name \
                 limit ?,?";
   let data = [user_id, Number(offset), Number(limit)];
 
   try {
     [rows] = await connection.query(query, data);
-    res.status(200).json({ success: true, items: rows });
+    res.status(200).json({ success: true, items: rows, cnt: rows.length });
   } catch (e) {
     res.status(500).json({ success: false, error: e });
   }

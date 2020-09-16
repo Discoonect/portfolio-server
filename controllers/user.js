@@ -91,7 +91,7 @@ exports.checkid = async (req, res, next) => {
 
 // @desc             로그인
 // @route            POST/api/v1/user/login
-// @request          user_name, user_passwd
+// @request          user_id, user_passwd
 // @response         success
 exports.login = async (req, res, next) => {
   let name = req.body.user_name;
@@ -135,7 +135,7 @@ exports.login = async (req, res, next) => {
 
 //@desc             로그아웃
 //@route            DELETE/api/v1/user/logout
-//@request          token(header), user_name(auth)
+//@request          token(header), user_id(auth)
 //@response         success
 exports.logout = async (req, res, next) => {
   let user_id = req.user.id;
@@ -154,7 +154,7 @@ exports.logout = async (req, res, next) => {
 
 //@desc             회원 탈퇴
 //@route            DELETE/api/v1/user/adios
-//@request          user_name(auth)
+//@request          user_id(auth)
 //@response         success
 
 exports.adios = async (req, res, next) => {
@@ -183,7 +183,7 @@ exports.adios = async (req, res, next) => {
 
 //@desc             내 피드에서 이름, 사진, 팔로워, 한줄소개 표시
 //@route            GET/api/v1/user/mypage
-//@request          user_name(auth)
+//@request          user_id(auth)
 //@response         success, items
 exports.mypage = async (req, res, next) => {
   let user_id = req.user.id;
@@ -194,7 +194,7 @@ exports.mypage = async (req, res, next) => {
               from user as u \
               join follow as f \
               on u.id = f.following_id \
-              where f.following_id = ? ";
+              where f.following_id = ? and f.user_id != f.following_id ";
 
   let data = [user_id];
   try {
@@ -207,7 +207,7 @@ exports.mypage = async (req, res, next) => {
 
 //@desc             내 피드에서 게시글, 팔로잉 표시 가져오기
 //@route            GET/api/v1/user/mypage2
-//@request          user_name(auth)
+//@request          user_id(auth)
 //@response         success, items
 exports.mypage2 = async (req, res, next) => {
   let user_id = req.user.id;
@@ -218,7 +218,8 @@ exports.mypage2 = async (req, res, next) => {
               from follow as f \
               join user as u \
               on f.user_id = u.id \
-              where f.user_id = ?";
+              where f.user_id = ? and f.user_id != f.following_id";
+
   let data = [user_id, user_id];
   try {
     [rows] = await connection.query(query, data);
@@ -230,7 +231,7 @@ exports.mypage2 = async (req, res, next) => {
 
 //@desc             한줄소개 작성
 //@route            PUT/api/v1/user/myintroduce
-//@request          user_name(auth), introduce
+//@request          user_id(auth), introduce
 //@response         success
 exports.myintroduce = async (req, res, next) => {
   let user_id = req.user.id;
@@ -304,6 +305,54 @@ exports.deleteprofilephoto = async (req, res, next) => {
     res
       .status(200)
       .json({ success: true, message: "기본이미지로 변경되었습니다" });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e });
+  }
+};
+
+//@desc             다른유저 피드에서 이름, 사진, 팔로워, 한줄소개 표시
+//@route            GET/api/v1/user/userpage/:user_id
+//@request          user_id
+//@response         success, items
+exports.userpage = async (req, res, next) => {
+  let user_id = req.params.user_id;
+  let query =
+    "select u.user_name, u.user_profilephoto, \
+              count(f.following_id) as follower, \
+              introduce \
+              from user as u \
+              join follow as f \
+              on u.id = f.following_id \
+              where f.following_id = ? and f.user_id != f.following_id";
+
+  let data = [user_id];
+  try {
+    [rows] = await connection.query(query, data);
+    res.status(200).json({ success: true, items: rows });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e });
+  }
+};
+
+//@desc             다른유저 피드에서 게시글, 팔로잉 표시 가져오기
+//@route            GET/api/v1/user/userpage2/:user_id
+//@request          user_id
+//@response         success, items
+exports.userpage2 = async (req, res, next) => {
+  let user_id = req.params.user_id;
+  let query =
+    "select \
+              (select count(*)from post where post.user_id = ?)as cnt_post, \
+              count(distinct f.following_id)as following \
+              from follow as f \
+              join user as u \
+              on f.user_id = u.id \
+              where f.user_id = ? and f.user_id != f.following_id";
+
+  let data = [user_id, user_id];
+  try {
+    [rows] = await connection.query(query, data);
+    res.status(200).json({ success: true, items: rows });
   } catch (e) {
     res.status(500).json({ success: false, error: e });
   }
