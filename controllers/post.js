@@ -260,7 +260,7 @@ exports.getpostphotourl = async (req, res, next) => {
 exports.bestpost = async (req, res, next) => {
   let offset = req.query.offset;
   let limit = req.query.limit;
-  let query = `select count(pl.post_id)as cnt_like, \
+  let query = `select p.user_id, count(pl.post_id)as cnt_like, \
                 p.id as post_id, p.photo_url \
                 from post as p \
                 left join postlike as pl \
