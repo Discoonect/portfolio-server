@@ -51,7 +51,7 @@ exports.deletefollow = async (req, res, next) => {
 };
 //@desc             내가 팔로우 한 유저 목록 보기(팔로잉)
 //@route            GET/api/v1/follow/myfollowing
-//@request          user_id(auth), following_id
+//@request          user_id(auth)
 //@response         success, items
 exports.myfollowing = async (req, res, next) => {
   let user_id = req.user.id;
@@ -82,7 +82,7 @@ exports.myfollowing = async (req, res, next) => {
 
 //@desc             나를 팔로우 한 유저 목록 보기(팔로워)
 //@route            GET/api/v1/follow/myfollower
-//@request          user_id(auth), following_id
+//@request          user_id(auth)
 //@response         success, items
 exports.myfollower = async (req, res, next) => {
   let user_id = req.user.id;
@@ -108,6 +108,26 @@ exports.myfollower = async (req, res, next) => {
   try {
     [rows] = await connection.query(query, data);
     res.status(200).json({ success: true, items: rows, cnt: rows.length });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e });
+  }
+};
+
+//@desc             내가 팔로우 한 유저인지 표시
+//@route            GET/api/v1/follow/checkfollow/:following_id
+//@request          user_id(auth), following_id
+//@response         success, items
+exports.checkfollow = async (req, res, next) => {
+  let user_id = req.user.id;
+  let following_id = req.params.following_id;
+
+  let query =
+    "select if(following_id, 1, '')as follow from follow where user_id = ? and following_id = ?";
+
+  let data = [user_id, following_id];
+  try {
+    [result] = await connection.query(query, data);
+    res.status(200).json({ success: true, result: result });
   } catch (e) {
     res.status(500).json({ success: false, error: e });
   }
