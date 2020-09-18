@@ -238,7 +238,7 @@ exports.getpostphotourl = async (req, res, next) => {
     return;
   }
   let query =
-    "select p.id, p.photo_url \
+    "select p.id, p.photo_url, p.user_id \
               from post as p \
               where user_id = ? \
               order by p.created_at desc\
