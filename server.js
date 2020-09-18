@@ -11,6 +11,7 @@ const follow = require("./routes/follow");
 const comment = require("./routes/comment");
 const like = require("./routes/like");
 const search = require("./routes/search");
+const alarm = require("./routes/alarm");
 
 const app = express();
 app.use(express.json());
@@ -25,6 +26,7 @@ app.use("/api/v1/follow", follow);
 app.use("/api/v1/comment", comment);
 app.use("/api/v1/like", like);
 app.use("/api/v1/search", search);
+app.use("/api/v1/alarm", alarm);
 
 const PORT = process.env.PORT || 5990;
 

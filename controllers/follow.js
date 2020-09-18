@@ -122,7 +122,7 @@ exports.checkfollow = async (req, res, next) => {
   let following_id = req.params.following_id;
 
   let query =
-    "select if(following_id, 1, '')as follow from follow where user_id = ? and following_id = ?";
+    "select if(following_id, 1, null)as follow from follow where user_id = ? and following_id = ?";
 
   let data = [user_id, following_id];
   try {
