@@ -51,7 +51,7 @@ exports.deletefollow = async (req, res, next) => {
 };
 //@desc             유저가 팔로우 한 유저 목록 보기(팔로잉)
 //@route            GET/api/v1/follow/userfollowing/:user_id
-//@request          user_id(auth)
+//@request          user_id
 //@response         success, items
 exports.userfollowing = async (req, res, next) => {
   let user_id = req.params.user_id;
@@ -82,7 +82,7 @@ exports.userfollowing = async (req, res, next) => {
 
 //@desc             유저를 팔로우 한 유저 목록 보기(팔로워)
 //@route            GET/api/v1/follow/userfollower/:user_id
-//@request          user_id(auth)
+//@request          user_id
 //@response         success, items
 exports.userfollower = async (req, res, next) => {
   let user_id = req.params.user_id;
