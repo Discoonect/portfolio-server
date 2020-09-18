@@ -49,12 +49,12 @@ exports.deletefollow = async (req, res, next) => {
     res.status(500).json({ success: false, error: e });
   }
 };
-//@desc             내가 팔로우 한 유저 목록 보기(팔로잉)
-//@route            GET/api/v1/follow/myfollowing
+//@desc             유저가 팔로우 한 유저 목록 보기(팔로잉)
+//@route            GET/api/v1/follow/userfollowing/:user_id
 //@request          user_id(auth)
 //@response         success, items
-exports.myfollowing = async (req, res, next) => {
-  let user_id = req.user.id;
+exports.userfollowing = async (req, res, next) => {
+  let user_id = req.params.user_id;
   let offset = req.query.offset;
   let limit = req.query.limit;
 
@@ -80,12 +80,12 @@ exports.myfollowing = async (req, res, next) => {
   }
 };
 
-//@desc             나를 팔로우 한 유저 목록 보기(팔로워)
-//@route            GET/api/v1/follow/myfollower
+//@desc             유저를 팔로우 한 유저 목록 보기(팔로워)
+//@route            GET/api/v1/follow/userfollower/:user_id
 //@request          user_id(auth)
 //@response         success, items
-exports.myfollower = async (req, res, next) => {
-  let user_id = req.user.id;
+exports.userfollower = async (req, res, next) => {
+  let user_id = req.params.user_id;
   let offset = req.query.offset;
   let limit = req.query.limit;
 
@@ -113,22 +113,30 @@ exports.myfollower = async (req, res, next) => {
   }
 };
 
-//@desc             내가 팔로우 한 유저인지 표시
+//@desc             내가 팔로우 한 유저인지 표시(팔로우 한 유저면 1, 아니면 0 표시)
 //@route            GET/api/v1/follow/checkfollow/:following_id
 //@request          user_id(auth), following_id
-//@response         success, items
+//@response         success, follow
 exports.checkfollow = async (req, res, next) => {
   let user_id = req.user.id;
   let following_id = req.params.following_id;
 
   let query =
-    "select if(following_id, 1, null)as follow from follow where user_id = ? and following_id = ?";
-
-  let data = [user_id, following_id];
+    "select case when following_id = ? then 1 else 0 end as following from follow where user_id = ?";
+  let data = [following_id, user_id];
   try {
     [result] = await connection.query(query, data);
-    res.status(200).json({ success: true, result: result });
+    let follow = 0;
+    for (let i = 0; i < result.length; i++) {
+      if (result[i].following == 1) {
+        follow = 1;
+        break;
+      }
+    }
+    console.log(result[0].following);
+    res.status(200).json({ success: true, follow: follow });
   } catch (e) {
     res.status(500).json({ success: false, error: e });
+    console.log(e);
   }
 };
