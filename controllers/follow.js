@@ -127,7 +127,7 @@ exports.checkfollow = async (req, res, next) => {
   let data = [user_id, following_id];
   try {
     [result] = await connection.query(query, data);
-    res.status(200).json({ success: true, result: result });
+    res.status(200).json({ success: true, result: result[0].follow });
   } catch (e) {
     res.status(500).json({ success: false, error: e });
   }
