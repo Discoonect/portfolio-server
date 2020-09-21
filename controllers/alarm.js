@@ -29,3 +29,35 @@ exports.postlikealarm = async (req, res, next) => {
     res.status(500).json({ success: false, error: e });
   }
 };
+
+//@desc             내 게시물에 댓글 달렸을때 알림 표시
+//@route            GET/api/v1/alarm/commentalarm?offset=0&limit=25
+//@request          user_id(auth), offset, limit
+//@response         success, items
+exports.commentalarm = async (req, res, next) => {
+  let user_id = req.user.id;
+  let offset = req.query.offset;
+  let limit = req.query.limit;
+
+  let query =
+    "select c.id as comment_id, \
+              u.id as user_id, u.user_profilephoto, u.user_name, \
+              c.post_id as post_id, p.photo_url, \
+              c.comment, c.created_at \
+              from post as p \
+              join comment as c \
+              on p.id = c.post_id \
+              join user as u \
+              on c.user_id = u.id \
+              where p.user_id = ? \
+              order by c.created_at desc \
+              limit ?,?";
+  let data = [user_id, Number(offset), Number(limit)];
+
+  try {
+    [rows] = await connection.query(query, data);
+    res.status(200).json({ success: true, items: rows });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e });
+  }
+};
