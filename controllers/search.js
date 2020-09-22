@@ -19,7 +19,7 @@ exports.search = async (req, res, next) => {
                 where u.user_name like "%${keyword}%" \
                 limit ${offset}, ${limit}`;
   } else {
-    query = `select u.id as user_id, p.id, p.photo_url, p.content from post as p \
+    query = `select p.id as user_id, p.id, p.photo_url, p.content from post as p \
               where p.content like "%${keyword}%" limit ${offset}, ${limit}`;
   }
 
