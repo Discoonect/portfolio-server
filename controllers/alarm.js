@@ -42,8 +42,8 @@ exports.commentalarm = async (req, res, next) => {
   let query =
     "select c.id as comment_id, \
               u.id as user_id, u.user_profilephoto, u.user_name, \
-              c.post_id as post_id, p.photo_url, \
-              c.comment, c.created_at \
+              c.comment, c.created_at, \
+              c.post_id as post_id, p.photo_url \
               from post as p \
               join comment as c \
               on p.id = c.post_id \
