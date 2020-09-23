@@ -11,7 +11,7 @@ exports.uploadpost = async (req, res, next) => {
   let user_id = req.user.id;
   let photo = req.files.photo;
   let content = req.body.content;
-
+  
   if (photo.mimetype.startsWith("image") == false) {
     res
       .status(400)

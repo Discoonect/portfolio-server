@@ -81,7 +81,7 @@ exports.checkid = async (req, res, next) => {
         .json({ success: true, message: "사용가능한 아이디 입니다" });
     } else {
       res
-        .status(200)
+        .status(400)
         .json({ success: false, message: "이미 사용중인 아이디 입니다" });
     }
   } catch (e) {
