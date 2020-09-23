@@ -95,7 +95,7 @@ exports.likepostuser = async (req, res, next) => {
   let data = [post_id];
   try {
     [rows] = await connection.query(query, data);
-    res.status(200).json({ success: true, items: rows });
+    res.status(200).json({ success: true, items: rows, cnt: rows.length });
   } catch (e) {
     res.status(500).json({ success: false, error: e });
   }
