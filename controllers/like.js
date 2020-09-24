@@ -85,7 +85,7 @@ exports.countlikepost = async (req, res, next) => {
 exports.likepostuser = async (req, res, next) => {
   let post_id = req.params.post_id;
   let query =
-    "select u.user_profilephoto, u.user_name, \
+    "select u.id, u.user_profilephoto, u.user_name, \
               pl.created_at as postliketime \
               from postlike as pl \
               join user as u \
