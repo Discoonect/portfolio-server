@@ -11,7 +11,7 @@ exports.uploadpost = async (req, res, next) => {
   let user_id = req.user.id;
   let photo = req.files.photo;
   let content = req.body.content;
-  
+
   if (photo.mimetype.startsWith("image") == false) {
     res
       .status(400)
@@ -47,6 +47,14 @@ exports.uploadpost = async (req, res, next) => {
     return;
   }
 };
+
+//@desc         게시물에 유저 태그
+//@route        POST/api/v1/post/posttag
+//@request      post_id
+//@response     success, items
+
+
+
 
 //@desc                 친구들과 나의 게시글 불러오기(25개씩)
 //@route                GET/api/v1/post/getallpost?offset=0&limit=25
@@ -275,3 +283,4 @@ exports.bestpost = async (req, res, next) => {
     res.status(500).json({ success: false, error: e });
   }
 };
+
