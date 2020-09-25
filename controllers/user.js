@@ -189,12 +189,12 @@ exports.mypage = async (req, res, next) => {
   let user_id = req.user.id;
   let query =
     "select u.user_name, u.user_profilephoto, \
-              count(f.following_id) as follower, \
+              count(f.following_id)-1 as follower, \
               u.introduce \
               from user as u \
               join follow as f \
               on u.id = f.following_id \
-              where f.following_id = ? and f.user_id != f.following_id ";
+              where f.following_id = ?";
 
   let data = [user_id];
   try {
