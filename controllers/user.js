@@ -190,7 +190,7 @@ exports.mypage = async (req, res, next) => {
   let query =
     "select u.user_name, u.user_profilephoto, \
               count(f.following_id) as follower, \
-              introduce \
+              u.introduce \
               from user as u \
               join follow as f \
               on u.id = f.following_id \
