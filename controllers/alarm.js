@@ -40,7 +40,7 @@ exports.commentalarm = async (req, res, next) => {
   let limit = req.query.limit;
 
   let query =
-    "select c.id as comment_id, \
+    "select c.id as comment_id, c.post_id \
               u.id as user_id, u.user_profilephoto, u.user_name, \
               c.comment, c.created_at, \
               c.post_id as post_id, p.photo_url \
