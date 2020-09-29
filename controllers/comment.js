@@ -67,28 +67,37 @@ exports.deletecomment = async (req, res, next) => {
   let comment_id = req.body.comment_id;
   let user_id = req.user.id;
 
-  let query = "select * from comment where id = ?";
+  let query =
+    "select c.id, c.user_id as comment_user_id, c.post_id, \
+                p.user_id as post_user_id \
+                from comment as c \
+                join post as p \
+                on c.post_id = p.id \
+                join user as u \
+                on u.id = p.user_id \
+                where c.id = ?";
   let data = [comment_id];
 
   try {
     [rows] = await connection.query(query, data);
-    if (rows[0].user_id != user_id) {
+    if (rows[0].comment_user_id == user_id || rows[0].post_user_id == user_id) {
+      query = "delete from comment where id = ?";
+      data = [comment_id];
+
+      try {
+        [result] = await connection.query(query, data);
+        res.status(200).json({ success: true, message: "댓글삭제 완료" });
+        return;
+      } catch (e) {
+        res.status(500).json({ success: false, error: e2 });
+        return;
+      }
+    } else {
       res.status(401).json({ success: false, message: "삭제할 수 없습니다" });
       return;
     }
   } catch (e) {
     res.status(500).json({ success: false, error: e });
-  }
-  query = "delete from comment where id = ?";
-  data = [comment_id];
-
-  try {
-    [result] = await connection.query(query, data);
-    res.status(200).json({ success: true, message: "댓글삭제 완료" });
-    return;
-  } catch (e) {
-    res.status(500).json({ success: false, error: e2 });
-    return;
   }
 };
 

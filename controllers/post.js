@@ -276,16 +276,3 @@ exports.bestpost = async (req, res, next) => {
   }
 };
 
-//@desc         게시물에 유저 태그
-//@route        POST/api/v1/post/posttag
-//@request      post_id, user_name
-//@response     success, items
-exports.posttag = async (req, res, next) => {
-  let post_id = req.body.post_id;
-  let tag_user = req.body.tag_user;
-  let tag_array = []
-  let query;
-
-
-  
-};
