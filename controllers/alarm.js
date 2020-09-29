@@ -49,7 +49,7 @@ exports.commentalarm = async (req, res, next) => {
               on p.id = c.post_id \
               join user as u \
               on c.user_id = u.id \
-              where p.user_id = ? \
+              where p.user_id = ? and c.user_id != p.user_id \
               order by c.created_at desc \
               limit ?,?";
   let data = [user_id, Number(offset), Number(limit)];
