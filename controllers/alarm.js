@@ -10,14 +10,14 @@ exports.postlikealarm = async (req, res, next) => {
   let limit = req.query.limit;
 
   let query =
-    "select u.user_profilephoto, u.user_name as user_name, \
+    "select u.id as user_id, u.user_profilephoto, u.user_name as user_name, \
     p.id as post_id, p.photo_url, pl.created_at \
     from postlike as pl \
     join post as p \
     on pl.post_id = p.id \
     join user as u \
     on pl.user_id = u.id \
-    where p.user_id = ? \
+    where p.user_id = ? and u.id != p.user_id \
     order by pl.created_at desc \
     limit ?, ?";
 
