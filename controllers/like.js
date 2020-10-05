@@ -29,7 +29,7 @@ exports.likepost = async (req, res, next) => {
 };
 
 //@desc             게시글 좋아요 취소
-//@route            POST/api/v1/like/deletelikepost
+//@route            DELETE/api/v1/like/deletelikepost
 //@request          post_id, user_id(auth)
 //@response         success
 exports.deletelikepost = async (req, res, next) => {

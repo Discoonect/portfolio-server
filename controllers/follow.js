@@ -27,8 +27,8 @@ exports.following = async (req, res, next) => {
   }
 };
 
-//@desc             팔로우 취소(android에서 delete사용 안되므로 post처리)
-//@route            POST/api/v1/follow/deletefollow
+//@desc             팔로우 취소
+//@route            DELETE/api/v1/follow/deletefollow
 //@request          user_id(auth), following_id
 //@response         success
 exports.deletefollow = async (req, res, next) => {
