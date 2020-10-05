@@ -92,7 +92,7 @@ exports.getallpost = async (req, res, next) => {
   }
 };
 
-//@desc                  게시글 수정
+//@desc                  게시글 사진과 내용 수정
 //@route                 PUT/api/v1/post/updatepost/:post_id
 //@request               user_id(auth), photo, content
 //@response              success
@@ -137,6 +137,43 @@ exports.updatepost = async (req, res, next) => {
 
   query = "update post set photo_url = ?, content = ? where id = ?";
   data = [photo.name, content, post_id];
+
+  try {
+    [result] = await connection.query(query, data);
+    res.status(200).json({ success: true, message: "수정완료!" });
+    return;
+  } catch (e) {
+    res.status(500).json({ success: false, error: e });
+    return;
+  }
+};
+
+//@desc                  게시글 내용만 수정
+//@route                 PUT/api/v1/post/updatecontent/:post_id
+//@request               user_id(auth), content
+//@response              success
+exports.updatecontent = async (req, res, next) => {
+  let user_id = req.user.id;
+  let post_id = req.params.post_id;
+  let content = req.body.content;
+
+  //본인의 게시글 수정인지 확인
+  let query = "select * from post where id = ?";
+  let data = [post_id];
+
+  try {
+    [rows] = await connection.query(query, data);
+    if (rows[0].user_id != user_id) {
+      res.status(400).json({ success: false, message: "권한이 없습니다" });
+      return;
+    }
+  } catch (e) {
+    res.status(500).json({ success: false, error: e });
+    return;
+  }
+
+  query = "update post set content = ? where id = ?";
+  data = [content, post_id];
 
   try {
     [result] = await connection.query(query, data);
