@@ -80,6 +80,7 @@ exports.deletecomment = async (req, res, next) => {
 
   try {
     [rows] = await connection.query(query, data);
+    //token의 user와 댓글 작성자 || 게시글 작성자와 token의 user가 맞으면 댓글 삭제 가능
     if (rows[0].comment_user_id == user_id || rows[0].post_user_id == user_id) {
       query = "delete from comment where id = ?";
       data = [comment_id];
@@ -93,6 +94,7 @@ exports.deletecomment = async (req, res, next) => {
         return;
       }
     } else {
+      //user가 아닐경우
       res.status(401).json({ success: false, message: "삭제할 수 없습니다" });
       return;
     }

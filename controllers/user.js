@@ -75,11 +75,13 @@ exports.checkid = async (req, res, next) => {
 
   try {
     [result] = await connection.query(query, data);
+    //등록한 아이디의 갯수가 0이면 사용가능
     if (result[0].count == 0) {
       res
         .status(200)
         .json({ success: true, message: "사용가능한 아이디 입니다" });
     } else {
+      //갯수가 0이 아닌 1이면 사용 불가능(중복오류)
       res
         .status(400)
         .json({ success: false, message: "이미 사용중인 아이디 입니다" });
@@ -102,11 +104,13 @@ exports.login = async (req, res, next) => {
 
   let user_id;
   try {
+    //비밀번호 맞는지 체크
     [rows] = await connection.query(query, data);
     let hashedPasswd = rows[0].user_passwd;
     user_id = rows[0].id;
     console.log(rows);
     const isMatch = await bcrypt.compare(passwd, hashedPasswd);
+    //맞지 않는 오류
     if (isMatch == false) {
       res
         .status(401)
@@ -254,18 +258,21 @@ exports.profilephoto = async (req, res, next) => {
   let user_id = req.user.id;
   let photo = req.files.photo;
 
+  //이미지 파일이 아닐 때 오류
   if (photo.mimetype.startsWith("image") == false) {
     res
       .status(400)
       .json({ success: false, message: "사진파일 형식이 아닙니다" });
     return;
   }
+  //이미지 파일 크기가 클 때 오류
   if (photo.size > process.env.MAX_FILE_SIZE) {
     res
       .status(400)
       .json({ success: false, error: e, message: "파일 크기가 큽니다" });
     return;
   }
+  //파일이름 설정
   photo.name = `photo_${user_id}_${Date.now()}${path.parse(photo.name).ext}`;
   let fileUploadPath = `${process.env.FILE_UPLOAD_PATH}/${photo.name}`;
 
