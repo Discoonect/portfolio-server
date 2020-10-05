@@ -116,69 +116,40 @@ exports.updatepost = async (req, res, next) => {
     res.status(500).json({ success: false, error: e });
     return;
   }
-  //본인의 게시글 수정
+  //본인이 맞으면 게시글 수정
+  //사진파일 형식이 아닐 때 오류
   if (photo.mimetype.startsWith("image") == false) {
     res
       .status(400)
       .json({ success: false, message: "사진파일 형식이 아닙니다" });
     return;
+  } else {
+    //사진파일이 맞을 때 이름 생성(유저아이디 & 현재날짜)
+    photo.name = `photo_${user_id}_${Date.now()}${path.parse(photo.name).ext}`;
+
+    let fileUploadPath = `${process.env.FILE_UPLOAD_PATH}/${photo.name}`;
+
+    photo.mv(fileUploadPath, async (err) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+    });
   }
-  //사진파일 이름 생성(유저아이디 & 현재날짜)
-  photo.name = `photo_${user_id}_${Date.now()}${path.parse(photo.name).ext}`;
-
-  let fileUploadPath = `${process.env.FILE_UPLOAD_PATH}/${photo.name}`;
-
-  photo.mv(fileUploadPath, async (err) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
-  });
-
-  query = "update post set photo_url = ?, content = ? where id = ?";
-  data = [photo.name, content, post_id];
-
   try {
-    [result] = await connection.query(query, data);
-    res.status(200).json({ success: true, message: "수정완료!" });
-    return;
-  } catch (e) {
-    res.status(500).json({ success: false, error: e });
-    return;
-  }
-};
-
-//@desc                  게시글 내용만 수정
-//@route                 PUT/api/v1/post/updatecontent/:post_id
-//@request               user_id(auth), content
-//@response              success
-exports.updatecontent = async (req, res, next) => {
-  let user_id = req.user.id;
-  let post_id = req.params.post_id;
-  let content = req.body.content;
-
-  //본인의 게시글 수정인지 확인
-  let query = "select * from post where id = ?";
-  let data = [post_id];
-
-  try {
+    //사진파일과 내용 수정할 때
     [rows] = await connection.query(query, data);
-    if (rows[0].user_id != user_id) {
-      res.status(400).json({ success: false, message: "권한이 없습니다" });
-      return;
+    console.log(rows[0].photo_url )
+    if (photo != null) {
+      query = "update post set photo_url = ?, content = ? where id = ?";
+      data = [photo.name, content, post_id];
+    } else {
+      //내용만 수정할 때
+      query = "update post set content = ? where id = ?";
+      data = [content, post_id];
     }
-  } catch (e) {
-    res.status(500).json({ success: false, error: e });
-    return;
-  }
-
-  query = "update post set content = ? where id = ?";
-  data = [content, post_id];
-
-  try {
-    [result] = await connection.query(query, data);
+    [result] = await connection.query(query, data)
     res.status(200).json({ success: true, message: "수정완료!" });
-    return;
   } catch (e) {
     res.status(500).json({ success: false, error: e });
     return;
