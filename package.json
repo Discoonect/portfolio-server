@@ -1,16 +1,18 @@
 {
   "name": "portfolio-server",
   "version": "1.0.0",
-  "description": "",
   "main": "server.js",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-fileupload": "^1.2.0",
     "init": "^0.1.2",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
-    "mysql2": "^2.1.0"
+    "mysql2": "^2.1.0",
+    "path": "^0.12.7",
+    "validator": "^13.1.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
@@ -28,5 +30,6 @@
   "bugs": {
     "url": "https://github.com/Discoonect/portfolio-server/issues"
   },
-  "homepage": "https://github.com/Discoonect/portfolio-server#readme"
+  "homepage": "https://github.com/Discoonect/portfolio-server#readme",
+  "description": ""
 }
