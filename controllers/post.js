@@ -56,6 +56,7 @@ exports.all = async (req, res, next) => {
   let user_id = req.user.id;
   let offset = req.query.offset;
   let limit = req.query.limit;
+  console.log(user_id, offset, limit)
 
   if (!user_id || !offset || !limit) {
     res.status(400).json({ success: false, message: "파라미터 오류" });
@@ -86,6 +87,7 @@ exports.all = async (req, res, next) => {
   let data = [user_id, user_id, user_id, Number(offset), Number(limit)];
   try {
     [rows] = await connection.query(query, data);
+    console.log(user_id)
     res.status(200).json({ success: true, items: rows, cnt: rows.length });
   } catch (e) {
     res.status(500).json({ success: false, error: e });
