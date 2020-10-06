@@ -49,10 +49,10 @@ exports.upload = async (req, res, next) => {
 };
 
 //@desc                 친구들과 나의 게시글 불러오기(25개씩)
-//@route                GET/api/v1/post/allpost?offset=0&limit=25
+//@route                GET/api/v1/post/all?offset=0&limit=25
 //@request              user_id(auth)
 //@response             success, items[], cnt
-exports.allpost = async (req, res, next) => {
+exports.all = async (req, res, next) => {
   let user_id = req.user.id;
   let offset = req.query.offset;
   let limit = req.query.limit;
@@ -96,7 +96,7 @@ exports.allpost = async (req, res, next) => {
 //@route                 PUT/api/v1/post/:post_id
 //@request               user_id(auth), photo, content
 //@response              success
-exports.updatepost = async (req, res, next) => {
+exports.update = async (req, res, next) => {
   let post_id = req.params.post_id;
   let user_id = req.user.id;
   let content = req.body.content;
@@ -171,7 +171,7 @@ exports.deletepost = async (req, res, next) => {
 //@route                  GET/api/v1/post/:post_id
 //@request                user_id(auth), post_id
 //@response               success, items
-exports.onepost = async (req, res, next) => {
+exports.one = async (req, res, next) => {
   let user_id = req.user.id;
   let post_id = req.params.post_id;
   let query =
@@ -233,10 +233,10 @@ exports.photourl = async (req, res, next) => {
 };
 
 //@desc         게시물의 좋아요가 많은 순서대로 표시
-//@route        GET/api/v1/post/bestpost
+//@route        GET/api/v1/post/best
 //@request      post_id
 //@response     success, items
-exports.bestpost = async (req, res, next) => {
+exports.best = async (req, res, next) => {
   let offset = req.query.offset;
   let limit = req.query.limit;
   let query = `select p.user_id, count(pl.post_id)as cnt_like, \
