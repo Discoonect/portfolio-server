@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const connection = require("../db/mysql_connection");
 
 //@desc             회원가입
-//@route            POST/api/v1/user
+//@route            POST/api/v1/user/signup
 //@request          user_name, user_passwd, user_phone, user_nickname
 //@response         success, token
 exports.signup = async (req, res, next) => {
