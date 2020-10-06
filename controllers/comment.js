@@ -2,7 +2,7 @@ const connection = require("../db/mysql_connection");
 const { updatepost } = require("./post");
 
 //@desc             댓글달기
-//@route            POST/api/v1/comment/addcomment
+//@route            POST/api/v1/comment/
 //@request          post_id, user_id(auth), comment
 //@response         success
 exports.addcomment = async (req, res, next) => {
@@ -22,45 +22,8 @@ exports.addcomment = async (req, res, next) => {
   }
 };
 
-// //@desc             댓글수정(보류)
-// //@route            PUT/api/v1/comment/updatecomment
-// //@request          user_id(auth), comment
-// //@response         success
-// exports.updatecomment = async (req, res, next) => {
-//   let user_id = req.user.id;
-//   let comment_id = req.body.comment_id;
-//   let comment = req.body.comment;
-
-//   let query = "select * from comment where id = ?";
-//   let data = [comment_id];
-
-//   //댓글 작성자인지 확인
-//   try {
-//     [rows] = await connection.query(query, data);
-//     if (rows[0].user_id != user_id) {
-//       res.status(401).json({ success: false, message: "수정할 수 없습니다" });
-//       return;
-//     }
-//   } catch (e) {
-//     res.status(500).json({ success: false, error: e });
-//     return;
-//   }
-//   //댓글 작성자가 맞을 시
-//   query = "update comment set comment = ? where id = ?";
-//   data = [comment, comment_id];
-
-//   try {
-//     [result] = await connection.query(query, data);
-//     res.status(200).json({ success: true, message: "댓글수정 완료" });
-//     return;
-//   } catch (e) {
-//     res.status(500).json({ success: false, error: e2 });
-//     return;
-//   }
-// };
-
 //@desc             댓글삭제
-//@route            DELETE/api/v1/comment/deletecomment
+//@route            DELETE/api/v1/comment/
 //@request          user_id(auth), comment_id
 //@response         success
 exports.deletecomment = async (req, res, next) => {
@@ -104,7 +67,7 @@ exports.deletecomment = async (req, res, next) => {
 };
 
 //@desc             게시글의 댓글 보기&총 댓글개수 가져오기(25개씩)
-//@route            GET/api/v1/comment/getcomment/:post_id?offset=0&limit=25
+//@route            GET/api/v1/comment/:post_id?offset=0&limit=25
 //@request          post_id, offset, limit
 //@response         success, items, cnt
 exports.getcomment = async (req, res, next) => {
@@ -137,10 +100,10 @@ exports.getcomment = async (req, res, next) => {
 };
 
 //@desc             게시글 1개의 총 댓글 갯수 출력
-//@route            GET/api/v1/comment/countcomment/:post_id
+//@route            GET/api/v1/comment/count/:post_id
 //@request          post_id
 //@response         success, cnt
-exports.countcomment = async (req, res, next) => {
+exports.count = async (req, res, next) => {
   let post_id = req.params.post_id;
   let query =
     "select count(c.post_id)as cnt \

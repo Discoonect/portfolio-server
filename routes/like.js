@@ -3,21 +3,16 @@ const express = require("express");
 const {
   likepost,
   deletelikepost,
-  countlikepost,
-  // likecomment,
-  // deletelikecomment,
-  // getmylike,
-  likepostuser,
+  countpost,
+  user,
 } = require("../controllers/like");
 
 const auth = require("../middleware/auth");
 
 const router = express.Router();
 
-router.route("/likepost").post(auth, likepost);
-router.route("/deletelikepost").delete(auth, deletelikepost);
-router.route("/countlikepost/:post_id").get(countlikepost);
-router.route("/likepostuser/:post_id").get(likepostuser);
-// router.route("/likecomment").post(auth, likecomment);
-// router.route("/deletelikecomment").delete(auth, deletelikecomment);
+router.route("/post").post(auth, likepost).delete(auth, deletelikepost);
+router.route("/countpost/:post_id").get(countpost);
+router.route("/user/:post_id").get(user);
+
 module.exports = router;

@@ -4,11 +4,11 @@ const { runInNewContext } = require("vm");
 const { off } = require("../db/mysql_connection");
 
 //@desc             팔로우 하기
-//@route            POST/api/v1/follow/following
+//@route            POST/api/v1/follow/
 //@request          user_id(auth), following_id
 //@response         success
 
-exports.following = async (req, res, next) => {
+exports.follow = async (req, res, next) => {
   let user_id = req.user.id;
   let following_id = req.body.following_id;
 
@@ -28,7 +28,7 @@ exports.following = async (req, res, next) => {
 };
 
 //@desc             팔로우 취소
-//@route            DELETE/api/v1/follow/deletefollow
+//@route            DELETE/api/v1/follow/
 //@request          user_id(auth), following_id
 //@response         success
 exports.deletefollow = async (req, res, next) => {
@@ -50,10 +50,10 @@ exports.deletefollow = async (req, res, next) => {
   }
 };
 //@desc             유저가 팔로우 한 유저 목록 보기(팔로잉)
-//@route            GET/api/v1/follow/userfollowing/:user_id?offset=0&limit=25
+//@route            GET/api/v1/follow/following/:user_id?offset=0&limit=25
 //@request          user_id
 //@response         success, items
-exports.userfollowing = async (req, res, next) => {
+exports.following = async (req, res, next) => {
   let user_id = req.params.user_id;
   let offset = req.query.offset;
   let limit = req.query.limit;
@@ -81,10 +81,10 @@ exports.userfollowing = async (req, res, next) => {
 };
 
 //@desc             유저를 팔로우 한 유저 목록 보기(팔로워)
-//@route            GET/api/v1/follow/userfollower/:user_id?offset=0&limit=25
+//@route            GET/api/v1/follow/follower/:user_id?offset=0&limit=25
 //@request          user_id
 //@response         success, items
-exports.userfollower = async (req, res, next) => {
+exports.follower = async (req, res, next) => {
   let user_id = req.params.user_id;
   let offset = req.query.offset;
   let limit = req.query.limit;
@@ -114,10 +114,10 @@ exports.userfollower = async (req, res, next) => {
 };
 
 //@desc             내가 팔로우 한 유저인지 표시(팔로우 한 유저면 1, 아니면 0 표시)
-//@route            GET/api/v1/follow/checkfollow/:following_id
+//@route            GET/api/v1/follow/check/:following_id
 //@request          user_id(auth), following_id
 //@response         success, follow
-exports.checkfollow = async (req, res, next) => {
+exports.check = async (req, res, next) => {
   let user_id = req.user.id;
   let following_id = req.params.following_id;
 

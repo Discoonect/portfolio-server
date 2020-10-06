@@ -7,7 +7,7 @@ const connection = require("../db/mysql_connection");
 
 //@desc             회원가입
 //@route            POST/api/v1/user/signup
-//@request          user_name, user_passwd, user_phone, user_nickname
+//@request          user_name, user_passwd, user_phone
 //@response         success, token
 exports.signup = async (req, res, next) => {
   let name = req.body.user_name;
@@ -234,7 +234,7 @@ exports.mypage2 = async (req, res, next) => {
 };
 
 //@desc             한줄소개 작성
-//@route            PUT/api/v1/user/myintroduce
+//@route            POST/api/v1/user/myintroduce
 //@request          user_id(auth), introduce
 //@response         success
 exports.myintroduce = async (req, res, next) => {
@@ -298,7 +298,7 @@ exports.profilephoto = async (req, res, next) => {
 };
 
 //@desc             프로필사진 삭제(기본이미지로 변경)
-//@route            DELETE/api/v1/user/deleteprofilephoto
+//@route            DELETE/api/v1/user/profilephoto
 //@request          user_id(auth)
 //@response         success
 exports.deleteprofilephoto = async (req, res, next) => {

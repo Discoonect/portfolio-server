@@ -3,11 +3,11 @@ const path = require("path");
 const { runInNewContext } = require("vm");
 
 //@desc             사진과 내용 업로드
-//@route            POST/api/v1/post/uploadpost
+//@route            POST/api/v1/post/upload
 //@request          photo, content, user_id(auth)
 //@response         success
 
-exports.uploadpost = async (req, res, next) => {
+exports.upload = async (req, res, next) => {
   let user_id = req.user.id;
   let photo = req.files.photo;
   let content = req.body.content;
@@ -49,10 +49,10 @@ exports.uploadpost = async (req, res, next) => {
 };
 
 //@desc                 친구들과 나의 게시글 불러오기(25개씩)
-//@route                GET/api/v1/post/getallpost?offset=0&limit=25
+//@route                GET/api/v1/post/allpost?offset=0&limit=25
 //@request              user_id(auth)
 //@response             success, items[], cnt
-exports.getallpost = async (req, res, next) => {
+exports.allpost = async (req, res, next) => {
   let user_id = req.user.id;
   let offset = req.query.offset;
   let limit = req.query.limit;
@@ -93,7 +93,7 @@ exports.getallpost = async (req, res, next) => {
 };
 
 //@desc                  게시글 내용 수정
-//@route                 PUT/api/v1/post/updatepost/:post_id
+//@route                 PUT/api/v1/post/:post_id
 //@request               user_id(auth), photo, content
 //@response              success
 exports.updatepost = async (req, res, next) => {
@@ -128,7 +128,7 @@ exports.updatepost = async (req, res, next) => {
 };
 
 //@desc                   게시글 삭제
-//@route                  DELETE/api/v1/post/deletepost/:post_id
+//@route                  DELETE/api/v1/post/:post_id
 //@request                user_id(auth), post_id
 //@response               success
 exports.deletepost = async (req, res, next) => {
@@ -168,10 +168,10 @@ exports.deletepost = async (req, res, next) => {
 };
 
 //@desc                   게시글 1개 보기
-//@route                  GET/api/v1/post/getonepost/:post_id
+//@route                  GET/api/v1/post/:post_id
 //@request                user_id(auth), post_id
 //@response               success, items
-exports.getonepost = async (req, res, next) => {
+exports.onepost = async (req, res, next) => {
   let user_id = req.user.id;
   let post_id = req.params.post_id;
   let query =
@@ -203,10 +203,10 @@ exports.getonepost = async (req, res, next) => {
 };
 
 //@desc         피드에 게시된 사진 목록표시(25개씩)
-//@route        GET/api/v1/post/getpostphotourl/:user_id?offset=0&limit=25
+//@route        GET/api/v1/post/photourl/:user_id?offset=0&limit=25
 //@request      user_id, offset, limit
 //@response     success, items
-exports.getpostphotourl = async (req, res, next) => {
+exports.photourl = async (req, res, next) => {
   let user_id = req.params.user_id;
   let offset = req.query.offset;
   let limit = req.query.limit;
