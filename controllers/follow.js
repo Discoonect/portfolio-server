@@ -114,10 +114,10 @@ exports.follower = async (req, res, next) => {
 };
 
 //@desc             내가 팔로우 한 유저인지 표시(팔로우 한 유저면 1, 아니면 0 표시)
-//@route            GET/api/v1/follow/checkfollow/:following_id
+//@route            GET/api/v1/follow/check/:following_id
 //@request          user_id(auth), following_id
 //@response         success, follow
-exports.checkfollow = async (req, res, next) => {
+exports.check = async (req, res, next) => {
   let user_id = req.user.id;
   let following_id = req.params.following_id;
 
