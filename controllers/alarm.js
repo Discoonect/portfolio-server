@@ -31,10 +31,10 @@ exports.postlikealarm = async (req, res, next) => {
 };
 
 //@desc             내 게시물에 댓글 달렸을때 알림 표시
-//@route            GET/api/v1/alarm/commentalarm?offset=0&limit=25
+//@route            GET/api/v1/alarm/comment?offset=0&limit=25
 //@request          user_id(auth), offset, limit
 //@response         success, items
-exports.commentalarm = async (req, res, next) => {
+exports.comment = async (req, res, next) => {
   let user_id = req.user.id;
   let offset = req.query.offset;
   let limit = req.query.limit;
