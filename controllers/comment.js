@@ -99,11 +99,11 @@ exports.comment = async (req, res, next) => {
   }
 };
 
-//@desc             게시글 1개의 총 댓글 갯수 출력
-//@route            GET/api/v1/comment/countcomment/:post_id
+//@desc             게시글 1개의 댓글 갯수 출력
+//@route            GET/api/v1/comment/count/:post_id
 //@request          post_id
 //@response         success, cnt
-exports.countcomment = async (req, res, next) => {
+exports.count = async (req, res, next) => {
   let post_id = req.params.post_id;
   let query =
     "select count(c.post_id)as cnt \
