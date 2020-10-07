@@ -2,7 +2,7 @@ const connection = require("../db/mysql_connection");
 const validator = require("validator");
 
 //@desc             검색(@가 붙으면 유저검색, 아니면 검색단어가 포함된 게시글 표시)
-//@route            GET/api/v1/search/search?keyword=@a&offset=0&limit=25
+//@route            GET/api/v1/search?keyword=@a&offset=0&limit=25
 //@request          user_id
 //@response         success, items
 exports.search = async (req, res, next) => {
