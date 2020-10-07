@@ -23,7 +23,7 @@ exports.addcomment = async (req, res, next) => {
 };
 
 //@desc             댓글삭제
-//@route            DELETE/api/v1/comment/deletecomment
+//@route            DELETE/api/v1/comment/
 //@request          user_id(auth), comment_id
 //@response         success
 exports.deletecomment = async (req, res, next) => {
