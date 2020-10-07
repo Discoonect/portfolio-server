@@ -1,10 +1,10 @@
 const connection = require("../db/mysql_connection");
 
 //@desc             게시글 좋아요 하기
-//@route            POST/api/v1/like/likepost
+//@route            POST/api/v1/like/post
 //@request          post_id, user_id(auth)
 //@response         success
-exports.likepost = async (req, res, next) => {
+exports.post = async (req, res, next) => {
   let post_id = req.body.post_id;
   let user_id = req.user.id;
 
