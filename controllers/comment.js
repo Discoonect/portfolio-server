@@ -2,7 +2,7 @@ const connection = require("../db/mysql_connection");
 const { updatepost } = require("./post");
 
 //@desc             댓글달기
-//@route            POST/api/v1/comment/addcomment
+//@route            POST/api/v1/comment/
 //@request          post_id, user_id(auth), comment
 //@response         success
 exports.addcomment = async (req, res, next) => {
