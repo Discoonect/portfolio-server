@@ -128,7 +128,7 @@ exports.update = async (req, res, next) => {
 };
 
 //@desc                   게시글 삭제
-//@route                  DELETE/api/v1/post/deletepost/:post_id
+//@route                  DELETE/api/v1/post/:post_id
 //@request                user_id(auth), post_id
 //@response               success
 exports.deletepost = async (req, res, next) => {
