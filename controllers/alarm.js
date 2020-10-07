@@ -1,10 +1,10 @@
 const connection = require("../db/mysql_connection");
 
 //@desc             내 게시물을 좋아요 했을때 알림 표시
-//@route            GET/api/v1/alarm/postlikealarm?offset=0&limit=25
+//@route            GET/api/v1/alarm/postlike?offset=0&limit=25
 //@request          user_id(auth), offset, limit
 //@response         success, items
-exports.postlikealarm = async (req, res, next) => {
+exports.postlike = async (req, res, next) => {
   let user_id = req.user.id;
   let offset = req.query.offset;
   let limit = req.query.limit;
