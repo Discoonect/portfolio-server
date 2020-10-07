@@ -234,7 +234,7 @@ exports.mypage2 = async (req, res, next) => {
 };
 
 //@desc             한줄소개 작성
-//@route            PUT/api/v1/user/myintroduce
+//@route            POST/api/v1/user/myintroduce
 //@request          user_id(auth), introduce
 //@response         success
 exports.myintroduce = async (req, res, next) => {
