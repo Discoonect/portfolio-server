@@ -1,7 +1,7 @@
 const express = require("express");
 
 const {
-  following,
+  follow,
   deletefollow,
   userfollowing,
   userfollower,
@@ -12,7 +12,7 @@ const auth = require("../middleware/auth");
 
 const router = express.Router();
 
-router.route("/following").post(auth, following);
+router.route("/").post(auth, follow);
 router.route("/deletefollow").delete(auth, deletefollow);
 router.route("/userfollowing/:user_id").get(userfollowing);
 router.route("/userfollower/:user_id").get(userfollower);

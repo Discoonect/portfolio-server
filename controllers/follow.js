@@ -4,11 +4,11 @@ const { runInNewContext } = require("vm");
 const { off } = require("../db/mysql_connection");
 
 //@desc             팔로우 하기
-//@route            POST/api/v1/follow/following
+//@route            POST/api/v1/follow/
 //@request          user_id(auth), following_id
 //@response         success
 
-exports.following = async (req, res, next) => {
+exports.follow = async (req, res, next) => {
   let user_id = req.user.id;
   let following_id = req.body.following_id;
 
