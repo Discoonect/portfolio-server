@@ -63,10 +63,10 @@ exports.comment = async (req, res, next) => {
 };
 
 //@desc             나를 팔로우 했을때 알림 표시
-//@route            GET/api/v1/alarm/followalarm?offset=0&limit=25
+//@route            GET/api/v1/alarm/follow?offset=0&limit=25
 //@request          user_id(auth), offset, limit
 //@response         success, items
-exports.followalarm = async (req, res, next) => {
+exports.follow = async (req, res, next) => {
   let user_id = req.user.id;
   let offset = req.query.offset;
   let limit = req.query.limit;
