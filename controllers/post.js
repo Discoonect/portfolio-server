@@ -3,11 +3,11 @@ const path = require("path");
 const { runInNewContext } = require("vm");
 
 //@desc             사진과 내용 업로드
-//@route            POST/api/v1/post/uploadpost
+//@route            POST/api/v1/post/
 //@request          photo, content, user_id(auth)
 //@response         success
 
-exports.uploadpost = async (req, res, next) => {
+exports.upload = async (req, res, next) => {
   let user_id = req.user.id;
   let photo = req.files.photo;
   let content = req.body.content;
