@@ -93,10 +93,10 @@ exports.getallpost = async (req, res, next) => {
 };
 
 //@desc                  게시글 내용 수정
-//@route                 PUT/api/v1/post/updatepost/:post_id
+//@route                 PUT/api/v1/post/:post_id
 //@request               user_id(auth), photo, content
 //@response              success
-exports.updatepost = async (req, res, next) => {
+exports.update = async (req, res, next) => {
   let post_id = req.params.post_id;
   let user_id = req.user.id;
   let content = req.body.content;
