@@ -4,7 +4,7 @@ const {
   upload,
   update,
   deletepost,
-  allpost,
+  all,
   one,
   photourl,
   best,
@@ -17,7 +17,7 @@ const router = express.Router();
 router.route("/best").get(best);
 router.route("/photourl/:user_id").get(photourl);
 router.route("/upload").post(auth, upload);
-router.route("/allpost").get(auth, allpost);
+router.route("/all").get(auth, all);
 router.route("/:post_id").put(auth, update).delete(auth, deletepost).get(auth, one);
 
 module.exports = router;
