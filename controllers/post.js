@@ -232,11 +232,11 @@ exports.photourl = async (req, res, next) => {
   }
 };
 
-//@desc         게시물의 좋아요가 많은 순서대로 표시
-//@route        GET/api/v1/post/bestpost
+//@desc         인기게시물 표시
+//@route        GET/api/v1/post/best?offset=0&limit=25
 //@request      post_id
 //@response     success, items
-exports.bestpost = async (req, res, next) => {
+exports.best = async (req, res, next) => {
   let offset = req.query.offset;
   let limit = req.query.limit;
   let query = `select p.user_id, count(pl.post_id)as cnt_like, \

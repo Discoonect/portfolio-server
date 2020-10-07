@@ -7,7 +7,7 @@ const {
   allpost,
   one,
   photourl,
-  bestpost,
+  best,
 } = require("../controllers/post");
 
 const auth = require("../middleware/auth");
@@ -18,5 +18,5 @@ router.route("/upload").post(auth, upload);
 router.route("/photourl/:user_id").get(photourl);
 router.route("/allpost").get(auth, allpost);
 router.route("/:post_id").put(auth, update).delete(auth, deletepost).get(auth, one);
-router.route("/bestpost").get(bestpost);
+router.route("/best").get(best);
 module.exports = router;
