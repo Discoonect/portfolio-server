@@ -10,8 +10,8 @@ const auth = require("../middleware/auth");
 
 const router = express.Router();
 
-router.route("/postlikealarm").get(auth, postlikealarm);
+//router.route("/postlikealarm").get(auth, postlikealarm);
 router.route("/comment").get(auth, comment);
-router.route("/followalarm").get(auth, followalarm);
+//router.route("/followalarm").get(auth, followalarm);
 
 module.exports = router;
