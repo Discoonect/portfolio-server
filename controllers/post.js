@@ -52,7 +52,7 @@ exports.upload = async (req, res, next) => {
 //@route                GET/api/v1/post/getallpost?offset=0&limit=25
 //@request              user_id(auth)
 //@response             success, items[], cnt
-exports.getallpost = async (req, res, next) => {
+exports.allpost = async (req, res, next) => {
   let user_id = req.user.id;
   let offset = req.query.offset;
   let limit = req.query.limit;
