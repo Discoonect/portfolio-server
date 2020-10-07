@@ -168,7 +168,7 @@ exports.deletepost = async (req, res, next) => {
 };
 
 //@desc                   게시글 1개 보기
-//@route                  GET/api/v1/post/one/:post_id
+//@route                  GET/api/v1/post/:post_id
 //@request                user_id(auth), post_id
 //@response               success, items
 exports.one = async (req, res, next) => {

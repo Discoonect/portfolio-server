@@ -16,8 +16,7 @@ const router = express.Router();
 
 router.route("/upload").post(auth, upload);
 router.route("/getpostphotourl/:user_id").get(getpostphotourl);
-router.route("/one/:post_id").get(auth, one);
 router.route("/allpost").get(auth, allpost);
-router.route("/:post_id").put(auth, update).delete(auth, deletepost);
+router.route("/:post_id").put(auth, update).delete(auth, deletepost).get(auth, one);
 router.route("/bestpost").get(bestpost);
 module.exports = router;
