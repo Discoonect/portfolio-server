@@ -28,7 +28,6 @@ router.route("/mypage2").get(auth, mypage2);
 router.route("/userpage/:user_id").get(userpage);
 router.route("/userpage2/:user_id").get(userpage2);
 router.route("/myintroduce").post(auth, myintroduce);
-router.route("/profilephoto").post(auth, profilephoto);
-router.route("/deleteprofilephoto").delete(auth, deleteprofilephoto);
+router.route("/profilephoto").post(auth, profilephoto).delete(auth, deleteprofilephoto);
 
 module.exports = router;

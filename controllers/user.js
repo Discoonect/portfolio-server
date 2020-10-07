@@ -298,7 +298,7 @@ exports.profilephoto = async (req, res, next) => {
 };
 
 //@desc             프로필사진 삭제(기본이미지로 변경)
-//@route            DELETE/api/v1/user/deleteprofilephoto
+//@route            DELETE/api/v1/user/profilephoto
 //@request          user_id(auth)
 //@response         success
 exports.deleteprofilephoto = async (req, res, next) => {
