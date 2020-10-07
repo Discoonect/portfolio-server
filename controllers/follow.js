@@ -28,7 +28,7 @@ exports.follow = async (req, res, next) => {
 };
 
 //@desc             팔로우 취소
-//@route            DELETE/api/v1/follow/deletefollow
+//@route            DELETE/api/v1/follow/
 //@request          user_id(auth), following_id
 //@response         success
 exports.deletefollow = async (req, res, next) => {
