@@ -50,10 +50,10 @@ exports.deletefollow = async (req, res, next) => {
   }
 };
 //@desc             유저가 팔로우 한 유저 목록 보기(팔로잉)
-//@route            GET/api/v1/follow/userfollowing/:user_id?offset=0&limit=25
+//@route            GET/api/v1/follow/following/:user_id?offset=0&limit=25
 //@request          user_id
 //@response         success, items
-exports.userfollowing = async (req, res, next) => {
+exports.following = async (req, res, next) => {
   let user_id = req.params.user_id;
   let offset = req.query.offset;
   let limit = req.query.limit;
