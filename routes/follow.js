@@ -4,7 +4,7 @@ const {
   follow,
   deletefollow,
   following,
-  userfollower,
+  follower,
   checkfollow,
 } = require("../controllers/follow");
 
@@ -14,6 +14,6 @@ const router = express.Router();
 
 router.route("/").post(auth, follow).delete(auth, deletefollow);
 router.route("/following/:user_id").get(following);
-router.route("/userfollower/:user_id").get(userfollower);
+router.route("/follower/:user_id").get(follower);
 router.route("/checkfollow/:following_id").get(auth, checkfollow);
 module.exports = router;

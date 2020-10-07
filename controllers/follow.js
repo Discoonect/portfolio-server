@@ -81,10 +81,10 @@ exports.following = async (req, res, next) => {
 };
 
 //@desc             유저를 팔로우 한 유저 목록 보기(팔로워)
-//@route            GET/api/v1/follow/userfollower/:user_id?offset=0&limit=25
+//@route            GET/api/v1/follow/follower/:user_id?offset=0&limit=25
 //@request          user_id
 //@response         success, items
-exports.userfollower = async (req, res, next) => {
+exports.follower = async (req, res, next) => {
   let user_id = req.params.user_id;
   let offset = req.query.offset;
   let limit = req.query.limit;
