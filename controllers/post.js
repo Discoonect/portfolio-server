@@ -3,7 +3,7 @@ const path = require("path");
 const { runInNewContext } = require("vm");
 
 //@desc             사진과 내용 업로드
-//@route            POST/api/v1/post/
+//@route            POST/api/v1/post/upload
 //@request          photo, content, user_id(auth)
 //@response         success
 
