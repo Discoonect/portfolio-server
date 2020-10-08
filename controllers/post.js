@@ -1,6 +1,7 @@
 const connection = require("../db/mysql_connection");
 const path = require("path");
 const { runInNewContext } = require("vm");
+const AWS = require("aws-sdk")
 
 //@desc             사진과 내용 업로드
 //@route            POST/api/v1/post/upload
@@ -25,27 +26,43 @@ exports.upload = async (req, res, next) => {
   //사진파일이름 유저아이디와 현재 날짜로 생성
   photo.name = `photo_${user_id}_${Date.now()}${path.parse(photo.name).ext}`;
 
-  let fileUploadPath = `${process.env.FILE_UPLOAD_PATH}/${photo.name}`;
+  let file = photo.data
+  const S3_BUCKET = process.env.S3_BUCKET
+  const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID
+  const AWS_SECRET_ACCESS_ID = process.env.AWS_SECRET_ACCESS_ID
 
-  photo.mv(fileUploadPath, async (err) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
-  });
+  AWS.config.update({
+    accessKeyId : AWS_ACCESS_KEY_ID,
+    secretAccessKey : AWS_SECRET_ACCESS_ID,
+  })
 
-  let query = "insert into post (user_id, photo_url, content) values (?,?,?)";
+  const s3 = new AWS.S3()
+  let params = {
+    Bucket : S3_BUCKET,
+    Key : photo.name,
+    Body : file,
+    ContentType : path.parse(photo.name).ext.split(".")[1],
+    ACL : "public-read"
+  }
 
-  let data = [user_id, photo.name, content];
+  s3.upload(params, async function(err, data){
+    if(err == null){
+      let query = "insert into post (user_id, photo_url, content) values (?,?,?)";
+
+  let dbdata = [user_id, photo.name, content];
 
   try {
-    [result] = await connection.query(query, data);
+    [result] = await connection.query(query, dbdata);
     res.status(200).json({ success: true, message: "업로드 완료!" });
     return;
   } catch (e) {
     res.status(500).json({ success: false, error: e, message: "업로드 실패" });
     return;
   }
+    }else{
+      res.status(403).json({ success: false, error: e, message: "S3 오류" })
+    }
+  })
 };
 
 //@desc                 친구들과 나의 게시글 불러오기(25개씩)
