@@ -2,6 +2,7 @@ const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const path = require("path");
 const jwt = require("jsonwebtoken");
+const AWS = require("aws-sdk")
 
 const connection = require("../db/mysql_connection");
 
@@ -294,6 +295,7 @@ exports.profilephoto = async (req, res, next) => {
   }
 
   s3.upload(params, async function(err, data){
+    console.log(err, data)
     if(err == null){
       let query = "update user set user_profilephoto = ? where id = ?";
   let dbdata = [photo.name, user_id];

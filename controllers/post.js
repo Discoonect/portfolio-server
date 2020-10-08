@@ -46,6 +46,7 @@ exports.upload = async (req, res, next) => {
   }
 
   s3.upload(params, async function(err, data){
+    console.log(err, data)
     if(err == null){
       let query = "insert into post (user_id, photo_url, content) values (?,?,?)";
 
