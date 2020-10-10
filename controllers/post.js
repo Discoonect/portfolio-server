@@ -267,7 +267,7 @@ exports.best = async (req, res, next) => {
                 limit ${offset}, ${limit}`;
   try {
     [rows] = await connection.query(query);
-    res.status(200).json({ success: true, items: rows, cnt:row.length });
+    res.status(200).json({ success: true, items: rows, cnt:rows.length });
   } catch (e) {
     res.status(500).json({ success: false, error: e });
   }
