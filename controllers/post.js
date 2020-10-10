@@ -244,7 +244,7 @@ exports.photourl = async (req, res, next) => {
 
   try {
     [rows] = await connection.query(query, data);
-    res.status(200).json({ success: true, items: rows });
+    res.status(200).json({ success: true, items: rows, cnt:rows.length });
   } catch (e) {
     res.status(500).json({ success: false, error: e });
   }
@@ -267,7 +267,7 @@ exports.best = async (req, res, next) => {
                 limit ${offset}, ${limit}`;
   try {
     [rows] = await connection.query(query);
-    res.status(200).json({ success: true, items: rows });
+    res.status(200).json({ success: true, items: rows, cnt:row.length });
   } catch (e) {
     res.status(500).json({ success: false, error: e });
   }
