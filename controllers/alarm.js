@@ -9,6 +9,10 @@ exports.postlike = async (req, res, next) => {
   let offset = req.query.offset;
   let limit = req.query.limit;
 
+  if(!user_id || !offset || !limit){
+    res.status(400).json({success : false, message : "파라미터 오류"})
+  }
+
   let query =
     "select u.id as user_id, u.user_profilephoto, u.user_name as user_name, \
     p.id as post_id, p.photo_url, pl.created_at \
