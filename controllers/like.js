@@ -23,7 +23,7 @@ exports.post = async (req, res, next) => {
         .json({ success: false, message: "이미 이 게시글을 좋아합니다" });
       return;
     } else {
-      res.status(501).json({ success: false, error: e });
+      res.status(500).json({ success: false, error: e });
     }
   }
 };
