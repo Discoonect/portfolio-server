@@ -11,6 +11,10 @@ exports.search = async (req, res, next) => {
   let limit = req.query.limit;
   let query;
 
+  if(!keyword || !offset || !limit){
+    res.status(400).json({success : false, message : "파라미터 오류"})
+  }
+
   //"@"구분 처리
   if (keyword.substring(keyword.length0, 1) == "@") {
     let search_array = keyword.split("@");
