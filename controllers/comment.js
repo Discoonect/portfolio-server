@@ -75,6 +75,10 @@ exports.comment = async (req, res, next) => {
   let offset = req.query.offset;
   let limit = req.query.limit;
 
+  if(!post_id || !offset || !limit){
+    res.status(400).json({success : false, message : "파라미터 오류"})
+  }
+
   let query =
     "select  p.user_id as post_user_id, c.id as comment_id, c.post_id as post_id,\
                 u.id as user_id, u.user_profilephoto, u.user_name, \
