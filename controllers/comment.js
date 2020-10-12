@@ -75,7 +75,7 @@ exports.comment = async (req, res, next) => {
   let offset = req.query.offset;
   let limit = req.query.limit;
 
-  if(!post_id || !offset || !limit){
+  if(!offset || !limit){
     res.status(400).json({success : false, message : "파라미터 오류"})
   }
 
