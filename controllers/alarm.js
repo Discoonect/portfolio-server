@@ -43,6 +43,10 @@ exports.comment = async (req, res, next) => {
   let offset = req.query.offset;
   let limit = req.query.limit;
 
+  if(!user_id || !offset || !limit){
+    res.status(400).json({success : false, message : "파라미터 오류"})
+  }
+
   let query =
     "select c.id as comment_id, \
               u.id as user_id, u.user_profilephoto, u.user_name, \
@@ -74,6 +78,10 @@ exports.follow = async (req, res, next) => {
   let user_id = req.user.id;
   let offset = req.query.offset;
   let limit = req.query.limit;
+
+  if(!user_id || !offset || !limit){
+    res.status(400).json({success : false, message : "파라미터 오류"})
+  }
 
   let query =
     "select u.id as user_id, u.user_profilephoto, u.user_name, \
